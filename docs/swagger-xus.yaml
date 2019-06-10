@@ -4634,7 +4634,7 @@ components:
           schema:
             $ref: '#/components/schemas/error_message'
           example: 
-            error: not_found
+            error_: not_found
             error_description: An entity with that name could not be found
     method_not_allowed:
       description: Method not allowed
