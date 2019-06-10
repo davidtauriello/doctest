@@ -249,7 +249,18 @@ paths:
             $ref: '#/components/schemas/fact_fields'
           description: List of concepts to return.
           
-  
+       ## - in: query
+       ##   name: aspect
+          # Wrap 'schema' into 'content.<media-type>'
+        ##  content:
+        ##    application/json:  # <---- media type indicates how to serialize / deserialize the parameter content
+        ##      schema:
+        ##        type: object
+        ##        properties:
+        ##          dimension:
+        ##           type: string
+        ##         member:
+        ##            type: string
           
       responses:
         '200':
