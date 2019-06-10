@@ -80,79 +80,52 @@ tags:
 security:
   - oauth2: [ROLE_CLIENT, ROLE_USER]
 paths:
-  /oauth2/token:
-    summary: Aquire an access token by fulfilling a client_credentials grant, or a password grant
-    post:
-      operationId: tokenUrl
-      tags: [oauth2]
-      security: []
-      description: >
-        Assuming a valid login exists, this route allows a trusted client to aquire an access token for itself, or to request an access token for a specific user. You may send both `client_credentials` grants and `password` grants via the following: 
-         * __application/x-www-form-urlencoded__
-
-
-        __[Read more](https://oauth.net/2/grant-types/)__
-      requestBody:
-        content:
-          application/json:
+  /api/v1/document/search:
+      summary: Request networks and relationships from XBRL filings based on search parameters.
+      get:
+        operationId: getDocumentInfo
+        tags: [Documents]
+        security:
+          - bearerAuth: []
+        description: >
+          Allows searching for XBRL documents and their content.
+        parameters:
+          - $ref: '#/components/parameters/document.top-level_Param'
+          - $ref: '#/components/parameters/document.uri_Param'
+          - $ref: '#/components/parameters/dts.id_Param'
+          
+          - in: query
+            name: fields
+            required: true
+            style: form
+            explode: false
+            allowEmptyValue : false
             schema:
-              $ref: '#/components/schemas/authorization_grant'
-            example:
-              grant_type: password
-              client_id: 1223
-              client_secret: xhOEnAX2M...gaIYLXOvCe25Q
-              username: campbell.pryde@xbrl.us
-              password: someSecurePassword
-          application/x-www-form-urlencoded:
-            schema:
-              $ref: '#/components/schemas/authorization_grant'
-          multipart/form-data:
-            schema:
-              $ref: '#/components/schemas/authorization_grant'
-      responses:
-        '200':
-          description: > 
-            The authorization grant has been validated, and an access token is granted. __[Read more](https://jwt.io/introduction/)__
-          content:
-            application/json:
-              schema:
-                type: object
-                properties:
-                  platform :
-                    type: string
-                    example: pc
-                  access_token:
-                    type: string
-                    format: byte
-                    example: eyJ...124nOvc
-                    description: A JWT access token. __[Read more](https://jwt.io/)__
-                  refresh_token:
-                    type: string
-                    format: byte
-                    example: eyJ...124nOvc
-                    description: A JWT access token. __[Read more](https://jwt.io/)__
-                  expires_in:
-                    type: integer
-                    example: 3600
-                  refresh_token_expires_in:
-                    type: integer
-                    example: 3600
-                  token_type:
-                    type: string
-                    example: bearer
-                    description: >
-                      The token_type will always be bearer. The access_token is considered a bearer token, and thus should be placed in all subqequent requests to the resource endpoints by using the following header:
-                        * Authorization: Bearer [token]
-                  
-        '400':
-          $ref: '#/components/responses/bad_request'
-        '401':
-          $ref: '#/components/responses/unauthorized'
-        '405':
-          $ref: '#/components/responses/method_not_allowed'
-        '500':
-          $ref: '#/components/responses/internal_server_error'
- 
+                 $ref: '#/components/schemas/document_fields' 
+                
+            description: List of concepts to return.
+          
+        responses:
+          '200':
+            description: __network details__ successfully accepted
+            content:
+              application/json:
+                schema:
+                  type: object
+                  properties:
+                    data:
+                        type: array
+                        items:
+                           $ref: '#/components/schemas/document_details'
+                     
+          '400':
+            $ref: '#/components/responses/bad_request'
+          '401':
+            $ref: '#/components/responses/bad_token'
+          '405':
+            $ref: '#/components/responses/method_not_allowed'
+          '500':
+            $ref: '#/components/responses/internal_server_error'   
 components:
   securitySchemes:
     OAuth2:
@@ -207,7 +180,101 @@ components:
         error_description:
           type: string
           description: Adds more details to the error
+          
+    document_details: 
+      type: object
+      properties:
+        document.top-level:
+          $ref: '#/components/schemas/document_top-level'
+        document.tree-level:
+          $ref: '#/components/schemas/document_tree-level'
+        document.tree-order:
+          $ref: '#/components/schemas/document_tree-order'
+        document.type:
+          $ref: '#/components/schemas/document_type'
+        document.uri:
+          $ref: '#/components/schemas/document_uri'
+        dts.content:
+          $ref: '#/components/schemas/dts_content'
+        dts.id:
+          $ref: '#/components/schemas/dts_id'
     
+    document_fields:
+      type: array
+      items:
+        type: string
+        enum: [
+              document.top-level
+              ,document.tree-level
+              ,document.tree-order
+              ,document.type
+              ,document.uri
+              ,dts.id
+              ,document.*
+              ]
+    document_top-level:
+      type: boolean
+      description: Boolean that indicates if the file in a dts is the entry point.
+      example: true
+  
+    document_tree-level:
+      type: integer
+      description: Level of the files in terms of which files import or reference child files.
+      example: 2
+      
+    document_tree-order:
+      type: integer
+      description: Order of the files in terms of how the dts is compiled from the underlying documents.
+      example: 2
+      
+    document_type:
+      type: string
+      description: Indicates if the document is a schema, linkbase or instance.
+      example: 'inline'
+      
+    document_uri:
+      type: string
+      format: uri
+      description: The url at which the document comprising the dts is located..
+      example: 'http://www.sec.gov/Archives/edgar/data/46619/000004661918000117/hei1031201810k.htm'
+      
+    dts_content:
+      type: string
+      description: Contents of the document
+      example: 'Contents of the file contains .....'
+      
+    
+    dts_id:
+      type: integer
+      description: The dts identifier for a given group of taxonomies. XBRL facts and linkbases are typically associated with a given report that is asscociated with a dts.
+      example: 1
+      
+  parameters:    
+    document.top-level_Param:
+      in: query
+      name: document.top-level
+      schema:
+          type: boolean
+      description: Boolean that indicates if the file in a dts is the entry point.
+      
+    document.uri_Param:
+      in: query
+      name: document.uri
+      schema:
+          type: boolean
+      description: The url at which the document comprising the dts is located.
+      
+    dts.id_Param:
+        in: query
+        name: dts.id
+        style: form
+        explode: false
+        schema:
+          type: array
+          items:
+            type: integer
+        description: The dts identifier for a given group of taxonomies. XBRL facts and linkbases are typically associated with a given report that is asscociated with a dts.
+        example: 321964
   responses:
     bad_request:
       description: >
