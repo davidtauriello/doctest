@@ -7,7 +7,7 @@ info:
   version: "V1"
   title: XBRL US API
   description: |
-    This API defines the XBRL US API. 
+    This API defines the XBRL US API -V4 
 
     ## Authorization Flow
 
