@@ -248,15 +248,6 @@
                   }
                 }
               }
-            },
-            "links" : {
-              "GetfactId" : {
-                "operationId" : "getFactBasedOnFactID",
-                "parameters" : {
-                  "fact.id" : "$response.body#/data/fact.id"
-                },
-                "description" : "The `fact.id` value returned in the response can be used as the `factId` parameter in `/api/v1/fact/{fact.id}`.\n"
-              }
             }
           },
           "400" : {
