@@ -2,7 +2,7 @@ openapi: 3.0.0
 # XBRL US API
 servers:
   - description: Running this application XBRL US server
-    url: 'https://api.xbrl.us/'
+    url: 'https://api.xbrl.us'
 info:
   version: "V1"
   title: XBRL US API
