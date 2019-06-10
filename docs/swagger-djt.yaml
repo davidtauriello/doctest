@@ -61,12 +61,12 @@ paths:
                     type: string
                     format: byte
                     example: eyJ...124nOvc
-                    description: A JWT access token. [Read more](https://jwt.io/)
+                    
                   refresh_token:
                     type: string
                     format: byte
                     example: eyJ...124nOvc
-                    description: A JWT access token. [Read more](https://jwt.io/)
+                    
                   expires_in:
                     type: integer
                     example: 3600
@@ -76,17 +76,11 @@ paths:
                   token_type:
                     type: string
                     example: bearer
-                    description: The token_type will always be bearer. The access_token is considered a bearer token, and thus should be placed in all subqequent requests to the resource endpoints by using the following.
+                    
                       
                   
         '400':
           $ref: '#/components/responses/bad_request'
-        '401':
-          $ref: '#/components/responses/unauthorized'
-        '405':
-          $ref: '#/components/responses/method_not_allowed'
-        '500':
-          $ref: '#/components/responses/internal_server_error'
   
                                 
 components:
@@ -151,7 +145,7 @@ components:
             $ref: '#/components/schemas/error_message'
           example:
             error: bad_request
-            error_description: Missing a field 'xxx'
+            error_description: Missing a field.
     bad_token:
       description: The token is invalid, expired, or corrupted
       content:
@@ -161,39 +155,3 @@ components:
           example:
             error: unauthorized,
             error_description: Cannot convert access token to JSON
-    unauthorized:
-      description: Bad credentials
-      content:
-        applications/json:
-          schema:
-            $ref: '#/components/schemas/error_message'
-          example:
-            error: unauthorized
-            error_description: Full authentication is required to access this resource
-    not_found:
-      description: This resource doesn't exist or you don't have the permissions to view it
-      content:
-        application/json:
-          schema:
-            $ref: '#/components/schemas/error_message'
-          example: 
-            error: not_found
-            error_description: An entity with that name could not be found
-    method_not_allowed:
-      description: Method not allowed
-      content:
-        application/json:
-          schema:
-            $ref: '#/components/schemas/error_message'
-          example: 
-            error: method_not_allowed
-            error_description: Request method 'DELETE' not supported
-    internal_server_error:
-      description: Internal error, not the fault of the client
-      content:
-        application/json:
-          schema:
-            $ref: '#/components/schemas/error_message'
-          example: 
-            error: internal_error
-            error_description: Unknown error, try again later
