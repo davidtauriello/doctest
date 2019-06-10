@@ -26,8 +26,7 @@ paths:
       operationId: tokenUrl
       tags: [oauth2]
       security: []
-      description: |
-        Assuming a valid login exists, this route allows a trusted client to aquire an access token for itself, or to request an access token for a specific user. You may send both `client_credentials` grants and `password` grants via the following: 
+      description: Assuming a valid login exists, this route allows a trusted client to aquire an access token for itself, or to request an access token for a specific user. You may send both client_credentials grants and password grants via the following. 
         
       requestBody:
         content:
@@ -77,8 +76,7 @@ paths:
                   token_type:
                     type: string
                     example: bearer
-                    description: >
-                      The token_type will always be bearer. The access_token is considered a bearer token, and thus should be placed in all subqequent requests to the resource endpoints by using the following header:
+                    description: The token_type will always be bearer. The access_token is considered a bearer token, and thus should be placed in all subqequent requests to the resource endpoints by using the following.
                       
                   
         '400':
@@ -111,10 +109,8 @@ components:
         grant_type:
           type: string
           example: password
-          description: >
-            Used to identify which credentials the authorization server needs to check
-              * `client_credentials` - Requires a client_id and client_secret only
-              * `password` - Requires a username and password as well as client_id and client_secret
+          description: Used to identify which credentials the authorization server needs to check
+              
         client_id:
           type: string
           example: XBRL US
@@ -148,8 +144,7 @@ components:
 
   responses:
     bad_request:
-      description: >
-        Malformed request or missing fields. Check that Content-Type matches the format/encoding, and that all required fields are spelled correctly, have correct types, and valid values. 
+      description: Malformed request or missing fields. Check that Content-Type matches the format/encoding, and that all required fields are spelled correctly, have correct types, and valid values. 
       content:
         applications/json:
           schema:
@@ -167,11 +162,7 @@ components:
             error: unauthorized,
             error_description: Cannot convert access token to JSON
     unauthorized:
-      description: >
-        Bad credentials, or could not read credentials due to malformed JSON
-         * "Full authentication is required..." -> malformed JSON
-         * "Bad client credentials" -> client_id/client_secret pair invalid
-         * "Bad credentials" -> username/password pair invalid
+      description: Bad credentials
       content:
         applications/json:
           schema:
