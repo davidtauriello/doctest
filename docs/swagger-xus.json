@@ -264,6 +264,2429 @@
           }
         }
       }
+    },
+    "/api/v1/fact/{fact.id}" : {
+      "summary" : "Request fact from XBRL filings based on its unique fact identifier.",
+      "get" : {
+        "operationId" : "getFactBasedOnFactID",
+        "tags" : [ "Facts" ],
+        "security" : [ {
+          "bearerAuth" : [ ]
+        } ],
+        "description" : "Allows searching for _XBRL facts_ based on the fact ID attribute of the fact.\n",
+        "parameters" : [ {
+          "name" : "fact.id",
+          "in" : "path",
+          "description" : "Id of the fact defined by the API.",
+          "required" : true,
+          "schema" : {
+            "type" : "integer"
+          }
+        }, {
+          "in" : "query",
+          "name" : "fields",
+          "required" : true,
+          "style" : "form",
+          "explode" : false,
+          "schema" : {
+            "$ref" : "#/components/schemas/fact_fields"
+          },
+          "description" : "List of fact components that can be searched on."
+        } ],
+        "responses" : {
+          "200" : {
+            "description" : "__fact details__ successfully accepted",
+            "content" : {
+              "application/json" : {
+                "schema" : {
+                  "type" : "object",
+                  "properties" : {
+                    "paging" : {
+                      "$ref" : "#/components/schemas/paging"
+                    },
+                    "data" : {
+                      "type" : "array",
+                      "items" : {
+                        "$ref" : "#/components/schemas/fact_details"
+                      }
+                    }
+                  }
+                }
+              }
+            }
+          },
+          "400" : {
+            "$ref" : "#/components/responses/bad_request"
+          },
+          "401" : {
+            "$ref" : "#/components/responses/bad_token"
+          },
+          "405" : {
+            "$ref" : "#/components/responses/method_not_allowed"
+          },
+          "500" : {
+            "$ref" : "#/components/responses/internal_server_error"
+          }
+        }
+      }
+    },
+    "/api/v1/fact/oim/search" : {
+      "summary" : "Request facts from XBRL filings based on search parameters.",
+      "get" : {
+        "operationId" : "getFactDetailsInOIMFormat",
+        "tags" : [ "Facts" ],
+        "security" : [ {
+          "bearerAuth" : [ ]
+        } ],
+        "description" : "Returns fact details in the OIM JSON format\n",
+        "parameters" : [ {
+          "$ref" : "#/components/parameters/concept.id_Param"
+        }, {
+          "$ref" : "#/components/parameters/concept.is-base_Param"
+        }, {
+          "$ref" : "#/components/parameters/concept.is-monetary_Param"
+        }, {
+          "$ref" : "#/components/parameters/concept.local-name_Param"
+        }, {
+          "$ref" : "#/components/parameters/concept.namespace_Param"
+        }, {
+          "$ref" : "#/components/parameters/dimension.is-base_Param"
+        }, {
+          "$ref" : "#/components/parameters/dimension.local-name_Param"
+        }, {
+          "$ref" : "#/components/parameters/dimension.namespace_Param"
+        }, {
+          "$ref" : "#/components/parameters/dimensions.count_Param"
+        }, {
+          "$ref" : "#/components/parameters/dimensions.id_Param"
+        }, {
+          "$ref" : "#/components/parameters/dts.entry-point_Param"
+        }, {
+          "$ref" : "#/components/parameters/dts.id_Param"
+        }, {
+          "$ref" : "#/components/parameters/dts.target-namespace_Param"
+        }, {
+          "$ref" : "#/components/parameters/entity.cik_Param"
+        }, {
+          "$ref" : "#/components/parameters/entity.id_Param"
+        }, {
+          "$ref" : "#/components/parameters/fact.has-dimensions_Param"
+        }, {
+          "$ref" : "#/components/parameters/fact.hash_Param"
+        }, {
+          "$ref" : "#/components/parameters/fact.id_Param"
+        }, {
+          "$ref" : "#/components/parameters/fact.is-extended_Param"
+        }, {
+          "$ref" : "#/components/parameters/fact.ultimus_Param"
+        }, {
+          "$ref" : "#/components/parameters/fact.ultimus-index_Param"
+        }, {
+          "$ref" : "#/components/parameters/fact.value_Param"
+        }, {
+          "$ref" : "#/components/parameters/member.is-base_Param"
+        }, {
+          "$ref" : "#/components/parameters/member.local-name_Param"
+        }, {
+          "$ref" : "#/components/parameters/member.namespace_Param"
+        }, {
+          "$ref" : "#/components/parameters/period.calendar-period_Param"
+        }, {
+          "$ref" : "#/components/parameters/period.fiscal-id_Param"
+        }, {
+          "$ref" : "#/components/parameters/period.fiscal-period_Param"
+        }, {
+          "$ref" : "#/components/parameters/period.fiscal-year_Param"
+        }, {
+          "$ref" : "#/components/parameters/period.id_Param"
+        }, {
+          "$ref" : "#/components/parameters/period.year_Param"
+        }, {
+          "$ref" : "#/components/parameters/report.accession_Param"
+        }, {
+          "$ref" : "#/components/parameters/report.creation-software_Param"
+        }, {
+          "$ref" : "#/components/parameters/report.entry-url_Param"
+        }, {
+          "$ref" : "#/components/parameters/report.id_Param"
+        }, {
+          "$ref" : "#/components/parameters/report.restated_Param"
+        }, {
+          "$ref" : "#/components/parameters/report.restated-index_Param"
+        }, {
+          "$ref" : "#/components/parameters/report.sec-url_Param"
+        }, {
+          "$ref" : "#/components/parameters/report.sic-code_Param"
+        }, {
+          "$ref" : "#/components/parameters/report.source-id_Param"
+        }, {
+          "$ref" : "#/components/parameters/report.source-name_Param"
+        }, {
+          "$ref" : "#/components/parameters/unit_Param"
+        } ],
+        "responses" : {
+          "200" : {
+            "description" : "__fact details__ successfully accepted",
+            "content" : {
+              "application/json" : {
+                "schema" : {
+                  "type" : "object",
+                  "properties" : {
+                    "documentInfo" : {
+                      "$ref" : "#/components/schemas/documentInfo_oim_json"
+                    },
+                    "facts" : {
+                      "$ref" : "#/components/schemas/facts_oim_json"
+                    }
+                  }
+                }
+              }
+            }
+          },
+          "400" : {
+            "$ref" : "#/components/responses/bad_request"
+          },
+          "401" : {
+            "$ref" : "#/components/responses/bad_token"
+          },
+          "405" : {
+            "$ref" : "#/components/responses/method_not_allowed"
+          },
+          "500" : {
+            "$ref" : "#/components/responses/internal_server_error"
+          }
+        }
+      }
+    },
+    "/api/v1/report/search" : {
+      "summary" : "Request facts from XBRL filings based on search parameters.",
+      "get" : {
+        "operationId" : "getReportDetails",
+        "tags" : [ "Reports" ],
+        "security" : [ {
+          "bearerAuth" : [ ]
+        } ],
+        "description" : "Allows searching for _XBRL reports_ based on the attributes of the report.\n",
+        "parameters" : [ {
+          "$ref" : "#/components/parameters/dts.id_Param"
+        }, {
+          "$ref" : "#/components/parameters/entity.cik_Param"
+        }, {
+          "$ref" : "#/components/parameters/entity.id_Param"
+        }, {
+          "$ref" : "#/components/parameters/entity.ticker_Param"
+        }, {
+          "$ref" : "#/components/parameters/report.accession_Param"
+        }, {
+          "$ref" : "#/components/parameters/report.document-type_Param"
+        }, {
+          "$ref" : "#/components/parameters/report.entity-name_Param"
+        }, {
+          "$ref" : "#/components/parameters/report.entry-type_Param"
+        }, {
+          "$ref" : "#/components/parameters/report.entry-url_Param"
+        }, {
+          "$ref" : "#/components/parameters/report.filer-category_Param"
+        }, {
+          "$ref" : "#/components/parameters/report.id_Param"
+        }, {
+          "$ref" : "#/components/parameters/report.is-most-current_Param"
+        }, {
+          "$ref" : "#/components/parameters/report.period-index_Param"
+        }, {
+          "$ref" : "#/components/parameters/report.restated_Param"
+        }, {
+          "$ref" : "#/components/parameters/report.restated-index_Param"
+        }, {
+          "$ref" : "#/components/parameters/report.sec-url_Param"
+        }, {
+          "$ref" : "#/components/parameters/report.sic-code_Param"
+        }, {
+          "$ref" : "#/components/parameters/report.source-id_Param"
+        }, {
+          "$ref" : "#/components/parameters/report.source-name_Param"
+        }, {
+          "in" : "query",
+          "name" : "fields",
+          "required" : true,
+          "style" : "form",
+          "explode" : false,
+          "allowEmptyValue" : false,
+          "schema" : {
+            "$ref" : "#/components/schemas/report_fields"
+          },
+          "description" : "List of concepts to return."
+        } ],
+        "responses" : {
+          "200" : {
+            "description" : "__report details__ successfully accepted",
+            "content" : {
+              "application/json" : {
+                "schema" : {
+                  "type" : "object",
+                  "properties" : {
+                    "paging" : {
+                      "$ref" : "#/components/schemas/paging"
+                    },
+                    "data" : {
+                      "type" : "array",
+                      "items" : {
+                        "$ref" : "#/components/schemas/report_details"
+                      }
+                    }
+                  }
+                }
+              }
+            }
+          },
+          "400" : {
+            "$ref" : "#/components/responses/bad_request"
+          },
+          "401" : {
+            "$ref" : "#/components/responses/bad_token"
+          },
+          "405" : {
+            "$ref" : "#/components/responses/method_not_allowed"
+          },
+          "500" : {
+            "$ref" : "#/components/responses/internal_server_error"
+          }
+        }
+      }
+    },
+    "/api/v1/report/{report.id}" : {
+      "summary" : "Request report from XBRL filings based on report id parameters.",
+      "get" : {
+        "operationId" : "getReportDetailsById",
+        "tags" : [ "Reports" ],
+        "security" : [ {
+          "bearerAuth" : [ ]
+        } ],
+        "description" : "Allows searching for _XBRL reports_ based on the report id attribute of the report.\n",
+        "parameters" : [ {
+          "name" : "report.id",
+          "in" : "path",
+          "description" : "Id of the report defined by the API.",
+          "required" : true,
+          "schema" : {
+            "type" : "integer"
+          }
+        }, {
+          "in" : "query",
+          "name" : "fields",
+          "required" : true,
+          "style" : "form",
+          "explode" : false,
+          "allowEmptyValue" : false,
+          "schema" : {
+            "$ref" : "#/components/schemas/report_fields"
+          },
+          "description" : "List of concepts to return."
+        } ],
+        "responses" : {
+          "200" : {
+            "description" : "__report details__ successfully accepted",
+            "content" : {
+              "application/json" : {
+                "schema" : {
+                  "type" : "object",
+                  "properties" : {
+                    "paging" : {
+                      "$ref" : "#/components/schemas/paging"
+                    },
+                    "data" : {
+                      "type" : "array",
+                      "items" : {
+                        "$ref" : "#/components/schemas/report_details"
+                      }
+                    }
+                  }
+                }
+              }
+            }
+          },
+          "400" : {
+            "$ref" : "#/components/responses/bad_request"
+          },
+          "401" : {
+            "$ref" : "#/components/responses/bad_token"
+          },
+          "405" : {
+            "$ref" : "#/components/responses/method_not_allowed"
+          },
+          "500" : {
+            "$ref" : "#/components/responses/internal_server_error"
+          }
+        }
+      }
+    },
+    "/api/v1/report/{report.id}/fact/search" : {
+      "summary" : "Request report from XBRL filings based on report id parameters.",
+      "get" : {
+        "operationId" : "getReportFactDetailsById",
+        "tags" : [ "Reports" ],
+        "security" : [ {
+          "bearerAuth" : [ ]
+        } ],
+        "description" : "Allows searching for _XBRL reports_ based on the report id attribute of the report and to return certain facts associated with that report.  The attributes of those facts can be used as search parameters.\n",
+        "parameters" : [ {
+          "name" : "report.id",
+          "in" : "path",
+          "description" : "Id of the report defined by the API.",
+          "required" : true,
+          "schema" : {
+            "type" : "integer"
+          }
+        }, {
+          "$ref" : "#/components/parameters/concept.id_Param"
+        }, {
+          "$ref" : "#/components/parameters/concept.is-base_Param"
+        }, {
+          "$ref" : "#/components/parameters/concept.is-monetary_Param"
+        }, {
+          "$ref" : "#/components/parameters/concept.local-name_Param"
+        }, {
+          "$ref" : "#/components/parameters/concept.namespace_Param"
+        }, {
+          "$ref" : "#/components/parameters/dimension.is-base_Param"
+        }, {
+          "$ref" : "#/components/parameters/dimension.local-name_Param"
+        }, {
+          "$ref" : "#/components/parameters/dimension.namespace_Param"
+        }, {
+          "$ref" : "#/components/parameters/dimensions.count_Param"
+        }, {
+          "$ref" : "#/components/parameters/dimensions.id_Param"
+        }, {
+          "$ref" : "#/components/parameters/dts.entry-point_Param"
+        }, {
+          "$ref" : "#/components/parameters/dts.id_Param"
+        }, {
+          "$ref" : "#/components/parameters/dts.target-namespace_Param"
+        }, {
+          "$ref" : "#/components/parameters/entity.cik_Param"
+        }, {
+          "$ref" : "#/components/parameters/entity.id_Param"
+        }, {
+          "$ref" : "#/components/parameters/fact.has-dimensions_Param"
+        }, {
+          "$ref" : "#/components/parameters/fact.hash_Param"
+        }, {
+          "$ref" : "#/components/parameters/fact.id_Param"
+        }, {
+          "$ref" : "#/components/parameters/fact.is-extended_Param"
+        }, {
+          "$ref" : "#/components/parameters/fact.ultimus_Param"
+        }, {
+          "$ref" : "#/components/parameters/fact.ultimus-index_Param"
+        }, {
+          "$ref" : "#/components/parameters/fact.value_Param"
+        }, {
+          "$ref" : "#/components/parameters/member.is-base_Param"
+        }, {
+          "$ref" : "#/components/parameters/member.local-name_Param"
+        }, {
+          "$ref" : "#/components/parameters/member.namespace_Param"
+        }, {
+          "$ref" : "#/components/parameters/period.calendar-period_Param"
+        }, {
+          "$ref" : "#/components/parameters/period.fiscal-id_Param"
+        }, {
+          "$ref" : "#/components/parameters/period.fiscal-period_Param"
+        }, {
+          "$ref" : "#/components/parameters/period.fiscal-year_Param"
+        }, {
+          "$ref" : "#/components/parameters/period.id_Param"
+        }, {
+          "$ref" : "#/components/parameters/period.year_Param"
+        }, {
+          "$ref" : "#/components/parameters/report.accession_Param"
+        }, {
+          "$ref" : "#/components/parameters/report.creation-software_Param"
+        }, {
+          "$ref" : "#/components/parameters/report.entry-url_Param"
+        }, {
+          "$ref" : "#/components/parameters/report.id_Param"
+        }, {
+          "$ref" : "#/components/parameters/report.restated_Param"
+        }, {
+          "$ref" : "#/components/parameters/report.restated-index_Param"
+        }, {
+          "$ref" : "#/components/parameters/report.sec-url_Param"
+        }, {
+          "$ref" : "#/components/parameters/report.sic-code_Param"
+        }, {
+          "$ref" : "#/components/parameters/report.source-id_Param"
+        }, {
+          "$ref" : "#/components/parameters/report.source-name_Param"
+        }, {
+          "$ref" : "#/components/parameters/unit_Param"
+        }, {
+          "in" : "query",
+          "name" : "fields",
+          "required" : true,
+          "style" : "form",
+          "explode" : false,
+          "allowEmptyValue" : false,
+          "schema" : {
+            "$ref" : "#/components/schemas/report_and_fact_fields"
+          },
+          "description" : "List of concepts to return."
+        } ],
+        "responses" : {
+          "200" : {
+            "description" : "__report details__ successfully accepted",
+            "content" : {
+              "application/json" : {
+                "schema" : {
+                  "type" : "object",
+                  "properties" : {
+                    "paging" : {
+                      "$ref" : "#/components/schemas/paging"
+                    },
+                    "data" : {
+                      "type" : "array",
+                      "items" : {
+                        "$ref" : "#/components/schemas/report_details_with_facts"
+                      }
+                    }
+                  }
+                }
+              }
+            }
+          },
+          "400" : {
+            "$ref" : "#/components/responses/bad_request"
+          },
+          "401" : {
+            "$ref" : "#/components/responses/bad_token"
+          },
+          "405" : {
+            "$ref" : "#/components/responses/method_not_allowed"
+          },
+          "500" : {
+            "$ref" : "#/components/responses/internal_server_error"
+          }
+        }
+      }
+    },
+    "/api/v1/report/fact/search" : {
+      "summary" : "Request report from XBRL filings based on report id parameters.",
+      "get" : {
+        "operationId" : "getReportFactDetailsBySearch",
+        "tags" : [ "Reports" ],
+        "security" : [ {
+          "bearerAuth" : [ ]
+        } ],
+        "description" : "Allows searching for _XBRL reports_ based on any  report search attributes of the report and to return certain facts associated with that report.  The attributes of those facts can be used as search parameters.\n",
+        "parameters" : [ {
+          "$ref" : "#/components/parameters/concept.id_Param"
+        }, {
+          "$ref" : "#/components/parameters/concept.is-base_Param"
+        }, {
+          "$ref" : "#/components/parameters/concept.is-monetary_Param"
+        }, {
+          "$ref" : "#/components/parameters/concept.local-name_Param"
+        }, {
+          "$ref" : "#/components/parameters/concept.namespace_Param"
+        }, {
+          "$ref" : "#/components/parameters/dimension.is-base_Param"
+        }, {
+          "$ref" : "#/components/parameters/dimension.local-name_Param"
+        }, {
+          "$ref" : "#/components/parameters/dimension.namespace_Param"
+        }, {
+          "$ref" : "#/components/parameters/dimensions.id_Param"
+        }, {
+          "$ref" : "#/components/parameters/dts.entry-point_Param"
+        }, {
+          "$ref" : "#/components/parameters/dts.id_Param"
+        }, {
+          "$ref" : "#/components/parameters/dts.target-namespace_Param"
+        }, {
+          "$ref" : "#/components/parameters/entity.cik_Param"
+        }, {
+          "$ref" : "#/components/parameters/entity.id_Param"
+        }, {
+          "$ref" : "#/components/parameters/entity.ticker_Param"
+        }, {
+          "$ref" : "#/components/parameters/fact.has-dimensions_Param"
+        }, {
+          "$ref" : "#/components/parameters/fact.hash_Param"
+        }, {
+          "$ref" : "#/components/parameters/fact.id_Param"
+        }, {
+          "$ref" : "#/components/parameters/fact.is-extended_Param"
+        }, {
+          "$ref" : "#/components/parameters/fact.ultimus-index_Param"
+        }, {
+          "$ref" : "#/components/parameters/fact.ultimus_Param"
+        }, {
+          "$ref" : "#/components/parameters/fact.value_Param"
+        }, {
+          "$ref" : "#/components/parameters/member.is-base_Param"
+        }, {
+          "$ref" : "#/components/parameters/member.local-name_Param"
+        }, {
+          "$ref" : "#/components/parameters/member.namespace_Param"
+        }, {
+          "$ref" : "#/components/parameters/period.calendar-period_Param"
+        }, {
+          "$ref" : "#/components/parameters/period.fiscal-id_Param"
+        }, {
+          "$ref" : "#/components/parameters/period.fiscal-period_Param"
+        }, {
+          "$ref" : "#/components/parameters/period.fiscal-year_Param"
+        }, {
+          "$ref" : "#/components/parameters/period.id_Param"
+        }, {
+          "$ref" : "#/components/parameters/period.year_Param"
+        }, {
+          "$ref" : "#/components/parameters/report.accession_Param"
+        }, {
+          "$ref" : "#/components/parameters/report.creation-software_Param"
+        }, {
+          "$ref" : "#/components/parameters/report.document-type_Param"
+        }, {
+          "$ref" : "#/components/parameters/report.entity-name_Param"
+        }, {
+          "$ref" : "#/components/parameters/report.entry-type_Param"
+        }, {
+          "$ref" : "#/components/parameters/report.entry-url_Param"
+        }, {
+          "$ref" : "#/components/parameters/report.filer-category_Param"
+        }, {
+          "$ref" : "#/components/parameters/report.id_Param"
+        }, {
+          "$ref" : "#/components/parameters/report.is-most-current_Param"
+        }, {
+          "$ref" : "#/components/parameters/report.period-index_Param"
+        }, {
+          "$ref" : "#/components/parameters/report.restated-index_Param"
+        }, {
+          "$ref" : "#/components/parameters/report.restated_Param"
+        }, {
+          "$ref" : "#/components/parameters/report.sec-url_Param"
+        }, {
+          "$ref" : "#/components/parameters/report.sic-code_Param"
+        }, {
+          "$ref" : "#/components/parameters/report.source-id_Param"
+        }, {
+          "$ref" : "#/components/parameters/report.source-name_Param"
+        }, {
+          "$ref" : "#/components/parameters/unit_Param"
+        }, {
+          "in" : "query",
+          "name" : "fields",
+          "required" : true,
+          "style" : "form",
+          "explode" : false,
+          "allowEmptyValue" : false,
+          "schema" : {
+            "$ref" : "#/components/schemas/report_details_with_facts"
+          },
+          "description" : "List of concepts to return."
+        } ],
+        "responses" : {
+          "200" : {
+            "description" : "__report details__ successfully accepted",
+            "content" : {
+              "application/json" : {
+                "schema" : {
+                  "type" : "object",
+                  "properties" : {
+                    "paging" : {
+                      "$ref" : "#/components/schemas/paging"
+                    },
+                    "data" : {
+                      "type" : "array",
+                      "items" : {
+                        "$ref" : "#/components/schemas/report_details_with_facts"
+                      }
+                    }
+                  }
+                }
+              }
+            }
+          },
+          "400" : {
+            "$ref" : "#/components/responses/bad_request"
+          },
+          "401" : {
+            "$ref" : "#/components/responses/bad_token"
+          },
+          "405" : {
+            "$ref" : "#/components/responses/method_not_allowed"
+          },
+          "500" : {
+            "$ref" : "#/components/responses/internal_server_error"
+          }
+        }
+      }
+    },
+    "/api/v1/entity/{entity.id}/report/search" : {
+      "summary" : "Request entity information based on the entity identifier. The entity ID is an internal id used by the API.",
+      "get" : {
+        "operationId" : "getEntityReportDetailsBasedOnID",
+        "tags" : [ "Entity" ],
+        "security" : [ {
+          "bearerAuth" : [ ]
+        } ],
+        "description" : "Allows searching for _Entities_ based on the entity identifier associated with the reporting entity. Use this to get entity and report information for the known entity.\n",
+        "parameters" : [ {
+          "name" : "entity.id",
+          "in" : "path",
+          "description" : "Id of the entity defined by the API.",
+          "required" : true,
+          "schema" : {
+            "type" : "integer"
+          }
+        }, {
+          "$ref" : "#/components/parameters/report.source-id_Param"
+        }, {
+          "$ref" : "#/components/parameters/report.source-name_Param"
+        }, {
+          "$ref" : "#/components/parameters/report.accession_Param"
+        }, {
+          "$ref" : "#/components/parameters/report.id_Param"
+        }, {
+          "$ref" : "#/components/parameters/report.document-type_Param"
+        }, {
+          "$ref" : "#/components/parameters/report.entry-type_Param"
+        }, {
+          "$ref" : "#/components/parameters/report.entry-url_Param"
+        }, {
+          "$ref" : "#/components/parameters/report.filer-category_Param"
+        }, {
+          "$ref" : "#/components/parameters/report.is-most-current_Param"
+        }, {
+          "$ref" : "#/components/parameters/report.period-index_Param"
+        }, {
+          "$ref" : "#/components/parameters/report.restated_Param"
+        }, {
+          "$ref" : "#/components/parameters/report.restated-index_Param"
+        }, {
+          "$ref" : "#/components/parameters/report.sec-url_Param"
+        }, {
+          "$ref" : "#/components/parameters/report.sic-code_Param"
+        }, {
+          "in" : "query",
+          "name" : "fields",
+          "required" : true,
+          "style" : "form",
+          "explode" : false,
+          "allowEmptyValue" : false,
+          "schema" : {
+            "$ref" : "#/components/schemas/entity_fields"
+          },
+          "description" : "List of fields to return."
+        } ],
+        "responses" : {
+          "200" : {
+            "description" : "__entity report details__ successfully accepted",
+            "content" : {
+              "application/json" : {
+                "schema" : {
+                  "type" : "object",
+                  "properties" : {
+                    "paging" : {
+                      "$ref" : "#/components/schemas/paging"
+                    },
+                    "data" : {
+                      "type" : "array",
+                      "items" : {
+                        "$ref" : "#/components/schemas/entity_details"
+                      }
+                    }
+                  }
+                }
+              }
+            }
+          },
+          "400" : {
+            "$ref" : "#/components/responses/bad_request"
+          },
+          "401" : {
+            "$ref" : "#/components/responses/bad_token"
+          },
+          "405" : {
+            "$ref" : "#/components/responses/method_not_allowed"
+          },
+          "500" : {
+            "$ref" : "#/components/responses/internal_server_error"
+          }
+        }
+      }
+    },
+    "/api/v1/entity/report/search" : {
+      "summary" : "Request facts from XBRL filings based on search parameters.",
+      "get" : {
+        "operationId" : "getEntityReportDetails",
+        "tags" : [ "Entity" ],
+        "security" : [ {
+          "bearerAuth" : [ ]
+        } ],
+        "description" : "Allows searching for _XBRL reports_ grouped by the entity that filed the report. The API allows searching on the attributes of the entity and the report.\n",
+        "parameters" : [ {
+          "$ref" : "#/components/parameters/entity.cik_Param"
+        }, {
+          "$ref" : "#/components/parameters/entity.id_Param"
+        }, {
+          "$ref" : "#/components/parameters/report.entity-name_Param"
+        }, {
+          "$ref" : "#/components/parameters/entity.ticker_Param"
+        }, {
+          "$ref" : "#/components/parameters/report.source-id_Param"
+        }, {
+          "$ref" : "#/components/parameters/report.source-name_Param"
+        }, {
+          "$ref" : "#/components/parameters/report.accession_Param"
+        }, {
+          "$ref" : "#/components/parameters/report.id_Param"
+        }, {
+          "$ref" : "#/components/parameters/report.document-type_Param"
+        }, {
+          "$ref" : "#/components/parameters/report.entry-type_Param"
+        }, {
+          "$ref" : "#/components/parameters/report.entry-url_Param"
+        }, {
+          "$ref" : "#/components/parameters/report.filer-category_Param"
+        }, {
+          "$ref" : "#/components/parameters/report.is-most-current_Param"
+        }, {
+          "$ref" : "#/components/parameters/report.period-index_Param"
+        }, {
+          "$ref" : "#/components/parameters/report.restated_Param"
+        }, {
+          "$ref" : "#/components/parameters/report.restated-index_Param"
+        }, {
+          "$ref" : "#/components/parameters/report.sec-url_Param"
+        }, {
+          "$ref" : "#/components/parameters/report.sic-code_Param"
+        }, {
+          "in" : "query",
+          "name" : "fields",
+          "required" : true,
+          "style" : "form",
+          "explode" : false,
+          "allowEmptyValue" : false,
+          "schema" : {
+            "$ref" : "#/components/schemas/entity_fields"
+          },
+          "description" : "List of fields to return."
+        } ],
+        "responses" : {
+          "200" : {
+            "description" : "__entity report details__ successfully accepted",
+            "content" : {
+              "application/json" : {
+                "schema" : {
+                  "type" : "object",
+                  "properties" : {
+                    "paging" : {
+                      "$ref" : "#/components/schemas/paging"
+                    },
+                    "data" : {
+                      "type" : "array",
+                      "items" : {
+                        "$ref" : "#/components/schemas/entity_details"
+                      }
+                    }
+                  }
+                }
+              }
+            }
+          },
+          "400" : {
+            "$ref" : "#/components/responses/bad_request"
+          },
+          "401" : {
+            "$ref" : "#/components/responses/bad_token"
+          },
+          "405" : {
+            "$ref" : "#/components/responses/method_not_allowed"
+          },
+          "500" : {
+            "$ref" : "#/components/responses/internal_server_error"
+          }
+        }
+      }
+    },
+    "/api/v1/entity/{entity.id}" : {
+      "summary" : "Request entity information based on the entity identifier. The entity ID is an internal id used by the API.",
+      "get" : {
+        "operationId" : "getEntityDetailsBasedOnID",
+        "tags" : [ "Entity" ],
+        "security" : [ {
+          "bearerAuth" : [ ]
+        } ],
+        "description" : "Allows searching for _Entities_ based on the entity identifier associated with the reporting entity. Use this to get ticker or CIK information quickly with a known entity id.\n",
+        "parameters" : [ {
+          "name" : "entity.id",
+          "in" : "path",
+          "description" : "Id of the entity defined by the API.",
+          "required" : true,
+          "schema" : {
+            "type" : "integer"
+          }
+        }, {
+          "in" : "query",
+          "name" : "fields",
+          "required" : true,
+          "style" : "form",
+          "explode" : false,
+          "allowEmptyValue" : false,
+          "schema" : {
+            "$ref" : "#/components/schemas/entity_only_fields"
+          },
+          "description" : "List of fields to return."
+        } ],
+        "responses" : {
+          "200" : {
+            "description" : "__entity report details__ successfully accepted",
+            "content" : {
+              "application/json" : {
+                "schema" : {
+                  "type" : "object",
+                  "properties" : {
+                    "paging" : {
+                      "$ref" : "#/components/schemas/paging"
+                    },
+                    "data" : {
+                      "type" : "array",
+                      "items" : {
+                        "$ref" : "#/components/schemas/entity_details"
+                      }
+                    }
+                  }
+                }
+              }
+            }
+          },
+          "400" : {
+            "$ref" : "#/components/responses/bad_request"
+          },
+          "401" : {
+            "$ref" : "#/components/responses/bad_token"
+          },
+          "405" : {
+            "$ref" : "#/components/responses/method_not_allowed"
+          },
+          "500" : {
+            "$ref" : "#/components/responses/internal_server_error"
+          }
+        }
+      }
+    },
+    "/api/v1/assertion/search" : {
+      "summary" : "Request errors from XBRL filings based on search parameters.",
+      "get" : {
+        "operationId" : "getAssertionDetails",
+        "tags" : [ "Assertions" ],
+        "security" : [ {
+          "bearerAuth" : [ ]
+        } ],
+        "description" : "Allows searching for errors in _XBRL reports_ based on validation frameworks used by regulators and Data Quality Committees. The API allows searching for errors by report, by error code, sverity of the error etc. .\n",
+        "parameters" : [ {
+          "$ref" : "#/components/parameters/assertion.code_Param"
+        }, {
+          "$ref" : "#/components/parameters/assertion.severity_Param"
+        }, {
+          "$ref" : "#/components/parameters/assertion.source_Param"
+        }, {
+          "$ref" : "#/components/parameters/assertion.type_Param"
+        }, {
+          "$ref" : "#/components/parameters/entity.name_Param"
+        }, {
+          "$ref" : "#/components/parameters/report.accession_Param"
+        }, {
+          "$ref" : "#/components/parameters/report.document-type_Param"
+        }, {
+          "$ref" : "#/components/parameters/report.entry-url_Param"
+        }, {
+          "$ref" : "#/components/parameters/report.id_Param"
+        }, {
+          "$ref" : "#/components/parameters/report.sec-url_Param"
+        }, {
+          "$ref" : "#/components/parameters/report.sic-code_Param"
+        }, {
+          "in" : "query",
+          "name" : "fields",
+          "required" : true,
+          "style" : "form",
+          "explode" : false,
+          "allowEmptyValue" : false,
+          "schema" : {
+            "$ref" : "#/components/schemas/assertion_fields"
+          },
+          "description" : "List of fields to return."
+        } ],
+        "responses" : {
+          "200" : {
+            "description" : "__report details__ successfully accepted",
+            "content" : {
+              "application/json" : {
+                "schema" : {
+                  "type" : "object",
+                  "properties" : {
+                    "paging" : {
+                      "$ref" : "#/components/schemas/paging"
+                    },
+                    "data" : {
+                      "type" : "array",
+                      "items" : {
+                        "$ref" : "#/components/schemas/assertion_details"
+                      }
+                    }
+                  }
+                }
+              }
+            }
+          },
+          "400" : {
+            "$ref" : "#/components/responses/bad_request"
+          },
+          "401" : {
+            "$ref" : "#/components/responses/bad_token"
+          },
+          "405" : {
+            "$ref" : "#/components/responses/method_not_allowed"
+          },
+          "500" : {
+            "$ref" : "#/components/responses/internal_server_error"
+          }
+        }
+      }
+    },
+    "/api/v1/assertion/validate" : {
+      "summary" : "Request errors from XBRL filings based on search parameters.",
+      "post" : {
+        "operationId" : "validateFiling",
+        "tags" : [ "Assertions" ],
+        "security" : [ {
+          "bearerAuth" : [ ]
+        } ],
+        "description" : "Allows a user to submit a zip file of an XBRL instance and associated taxonomy files to the API.  The API returns validation errors based on the validation framework selected. The results can be returned as either JSON or XML.",
+        "requestBody" : {
+          "required" : true,
+          "content" : {
+            "multipart/form-data" : {
+              "schema" : {
+                "type" : "object",
+                "properties" : {
+                  "file" : {
+                    "type" : "string",
+                    "format" : "binary"
+                  },
+                  "Task" : {
+                    "type" : "string",
+                    "enum" : [ "checkfiling", "dqcfiling" ]
+                  },
+                  "format" : {
+                    "type" : "string",
+                    "enum" : [ "xml", "json" ]
+                  },
+                  "efm" : {
+                    "type" : "string",
+                    "enum" : [ "strict", "pragmatic" ]
+                  },
+                  "Status" : {
+                    "type" : "string",
+                    "default" : "approved",
+                    "enum" : [ "approved", "proposed" ]
+                  }
+                }
+              }
+            }
+          }
+        },
+        "responses" : {
+          "200" : {
+            "description" : "__validation details__ successfully processed",
+            "content" : {
+              "application/xml" : {
+                "schema" : {
+                  "$ref" : "#/components/schemas/results"
+                }
+              },
+              "application/json" : {
+                "schema" : {
+                  "$ref" : "#/components/schemas/results"
+                }
+              }
+            }
+          },
+          "400" : {
+            "$ref" : "#/components/responses/bad_request"
+          },
+          "401" : {
+            "$ref" : "#/components/responses/bad_token"
+          },
+          "405" : {
+            "$ref" : "#/components/responses/method_not_allowed"
+          },
+          "500" : {
+            "$ref" : "#/components/responses/internal_server_error"
+          }
+        }
+      }
+    },
+    "/api/v1/dts/search" : {
+      "summary" : "Used to search taxonomies (dts) used in filings.  Each dts represents a unique identifier for a collection of taxonomy schema used by .",
+      "get" : {
+        "operationId" : "getDTSDetails",
+        "tags" : [ "DTS" ],
+        "security" : [ {
+          "bearerAuth" : [ ]
+        } ],
+        "description" : "Allows searching for a dts based on taxonomy name, entry point, hash etc.\n",
+        "parameters" : [ {
+          "$ref" : "#/components/parameters/dts.entry-point_Param"
+        }, {
+          "$ref" : "#/components/parameters/dts.hash_Param"
+        }, {
+          "$ref" : "#/components/parameters/dts.id_Param"
+        }, {
+          "$ref" : "#/components/parameters/dts.taxonomy_Param"
+        }, {
+          "$ref" : "#/components/parameters/dts.taxonomy-name_Param"
+        }, {
+          "$ref" : "#/components/parameters/dts.version_Param"
+        }, {
+          "$ref" : "#/components/parameters/report.accession_Param"
+        }, {
+          "$ref" : "#/components/parameters/report.id_Param"
+        }, {
+          "in" : "query",
+          "name" : "fields",
+          "required" : true,
+          "style" : "form",
+          "explode" : false,
+          "allowEmptyValue" : false,
+          "schema" : {
+            "$ref" : "#/components/schemas/dts_fields"
+          }
+        } ],
+        "responses" : {
+          "200" : {
+            "description" : "__concept details__ successfully accepted",
+            "content" : {
+              "application/json" : {
+                "schema" : {
+                  "type" : "object",
+                  "properties" : {
+                    "paging" : {
+                      "$ref" : "#/components/schemas/paging"
+                    },
+                    "data" : {
+                      "type" : "array",
+                      "items" : {
+                        "$ref" : "#/components/schemas/dts_details"
+                      }
+                    }
+                  }
+                }
+              }
+            }
+          },
+          "400" : {
+            "$ref" : "#/components/responses/bad_request"
+          },
+          "401" : {
+            "$ref" : "#/components/responses/bad_token"
+          },
+          "405" : {
+            "$ref" : "#/components/responses/method_not_allowed"
+          },
+          "500" : {
+            "$ref" : "#/components/responses/internal_server_error"
+          }
+        }
+      }
+    },
+    "/api/v1/dts/{dts.id}/concept/search" : {
+      "summary" : "Request errors from XBRL filings based on search parameters.",
+      "get" : {
+        "operationId" : "getConceptDetailsByDTS",
+        "tags" : [ "DTS" ],
+        "security" : [ {
+          "bearerAuth" : [ ]
+        } ],
+        "description" : "Allows searching for errors in _XBRL reports.\n",
+        "parameters" : [ {
+          "name" : "dts.id",
+          "in" : "path",
+          "required" : true,
+          "schema" : {
+            "type" : "integer"
+          },
+          "description" : "The dts identifier for a given group of taxonomies. XBRL facts and linkbases are typically associated with a given report that is asscociated with a dts.",
+          "example" : 321964
+        }, {
+          "$ref" : "#/components/parameters/concept.id_Param"
+        }, {
+          "$ref" : "#/components/parameters/concept.local-name_Param"
+        }, {
+          "$ref" : "#/components/parameters/concept.namespace_Param"
+        }, {
+          "$ref" : "#/components/parameters/dts.entry-point_Param"
+        }, {
+          "$ref" : "#/components/parameters/dts.hash_Param"
+        }, {
+          "$ref" : "#/components/parameters/dts.target-namespace_Param"
+        }, {
+          "in" : "query",
+          "name" : "fields",
+          "required" : true,
+          "style" : "form",
+          "explode" : false,
+          "allowEmptyValue" : false,
+          "schema" : {
+            "$ref" : "#/components/schemas/concept_fields"
+          }
+        } ],
+        "responses" : {
+          "200" : {
+            "description" : "__concept details__ successfully accepted",
+            "content" : {
+              "application/json" : {
+                "schema" : {
+                  "type" : "object",
+                  "properties" : {
+                    "paging" : {
+                      "$ref" : "#/components/schemas/paging"
+                    },
+                    "data" : {
+                      "type" : "array",
+                      "items" : {
+                        "$ref" : "#/components/schemas/concept_details"
+                      }
+                    }
+                  }
+                }
+              }
+            }
+          },
+          "400" : {
+            "$ref" : "#/components/responses/bad_request"
+          },
+          "401" : {
+            "$ref" : "#/components/responses/bad_token"
+          },
+          "405" : {
+            "$ref" : "#/components/responses/method_not_allowed"
+          },
+          "500" : {
+            "$ref" : "#/components/responses/internal_server_error"
+          }
+        }
+      }
+    },
+    "/api/v1/dts/{dts.id}/concept/{concept.local-name}" : {
+      "summary" : "Request errors from XBRL filings based on search parameters.",
+      "get" : {
+        "operationId" : "getConceptDetailsByDTSAndLocalName",
+        "tags" : [ "DTS" ],
+        "security" : [ {
+          "bearerAuth" : [ ]
+        } ],
+        "description" : "Allows searching for errors in _XBRL reports.\n",
+        "parameters" : [ {
+          "name" : "dts.id",
+          "in" : "path",
+          "required" : true,
+          "schema" : {
+            "type" : "integer"
+          },
+          "description" : "The dts identifier for a given group of taxonomies. XBRL facts and linkbases are typically associated with a given report that is asscociated with a dts.",
+          "example" : 321964
+        }, {
+          "name" : "concept.local-name",
+          "in" : "path",
+          "required" : true,
+          "schema" : {
+            "type" : "string"
+          },
+          "description" : "The concept name in the base schema of a taxonomy exluding the namespace, such as Assets or Liabilities. Use this to search across multiple taxonomies where the local name is known to be consistent over time.",
+          "example" : "Assets"
+        }, {
+          "in" : "query",
+          "name" : "fields",
+          "required" : true,
+          "style" : "form",
+          "explode" : false,
+          "allowEmptyValue" : false,
+          "schema" : {
+            "$ref" : "#/components/schemas/concept_fields"
+          }
+        } ],
+        "responses" : {
+          "200" : {
+            "description" : "__concept details__ successfully accepted",
+            "content" : {
+              "application/json" : {
+                "schema" : {
+                  "type" : "object",
+                  "properties" : {
+                    "paging" : {
+                      "$ref" : "#/components/schemas/paging"
+                    },
+                    "data" : {
+                      "type" : "array",
+                      "items" : {
+                        "$ref" : "#/components/schemas/concept_details"
+                      }
+                    }
+                  }
+                }
+              }
+            }
+          },
+          "400" : {
+            "$ref" : "#/components/responses/bad_request"
+          },
+          "401" : {
+            "$ref" : "#/components/responses/bad_token"
+          },
+          "405" : {
+            "$ref" : "#/components/responses/method_not_allowed"
+          },
+          "500" : {
+            "$ref" : "#/components/responses/internal_server_error"
+          }
+        }
+      }
+    },
+    "/api/v1/dts/{dts.id}/concept/{concept.local-name}/label" : {
+      "summary" : "Request errors from XBRL filings based on search parameters.",
+      "get" : {
+        "operationId" : "getLabelDetailsByDTSAndLocalName",
+        "tags" : [ "DTS" ],
+        "security" : [ {
+          "bearerAuth" : [ ]
+        } ],
+        "description" : "Search for references of a given concept in a given DTS.\n",
+        "parameters" : [ {
+          "name" : "dts.id",
+          "in" : "path",
+          "required" : true,
+          "schema" : {
+            "type" : "integer"
+          },
+          "description" : "The dts identifier for a given group of taxonomies. XBRL facts and linkbases are typically associated with a given report that is asscociated with a dts.",
+          "example" : 321964
+        }, {
+          "name" : "concept.local-name",
+          "in" : "path",
+          "required" : true,
+          "schema" : {
+            "type" : "string"
+          },
+          "description" : "The concept name in the base schema of a taxonomy exluding the namespace, such as Assets or Liabilities. Use this to search across multiple taxonomies where the local name is known to be consistent over time.",
+          "example" : "Assets"
+        }, {
+          "in" : "query",
+          "name" : "fields",
+          "required" : true,
+          "style" : "form",
+          "explode" : false,
+          "allowEmptyValue" : false,
+          "schema" : {
+            "$ref" : "#/components/schemas/label_fields"
+          }
+        } ],
+        "responses" : {
+          "200" : {
+            "description" : "__concept details__ successfully accepted",
+            "content" : {
+              "application/json" : {
+                "schema" : {
+                  "type" : "object",
+                  "properties" : {
+                    "paging" : {
+                      "$ref" : "#/components/schemas/paging"
+                    },
+                    "data" : {
+                      "type" : "array",
+                      "items" : {
+                        "$ref" : "#/components/schemas/label_details_search"
+                      }
+                    }
+                  }
+                }
+              }
+            }
+          },
+          "400" : {
+            "$ref" : "#/components/responses/bad_request"
+          },
+          "401" : {
+            "$ref" : "#/components/responses/bad_token"
+          },
+          "405" : {
+            "$ref" : "#/components/responses/method_not_allowed"
+          },
+          "500" : {
+            "$ref" : "#/components/responses/internal_server_error"
+          }
+        }
+      }
+    },
+    "/api/v1/dts/{dts.id}/concept/{concept.local-name}/reference" : {
+      "summary" : "Request errors from XBRL filings based on search parameters.",
+      "get" : {
+        "operationId" : "getReferenceDetailsByDTSAndLocalName",
+        "tags" : [ "DTS" ],
+        "security" : [ {
+          "bearerAuth" : [ ]
+        } ],
+        "description" : "Search for references of a given concept in a given DTS.\n",
+        "parameters" : [ {
+          "name" : "dts.id",
+          "in" : "path",
+          "required" : true,
+          "schema" : {
+            "type" : "integer"
+          },
+          "description" : "The dts identifier for a given group of taxonomies. XBRL facts and linkbases are typically associated with a given report that is asscociated with a dts.",
+          "example" : 321964
+        }, {
+          "name" : "concept.local-name",
+          "in" : "path",
+          "required" : true,
+          "schema" : {
+            "type" : "string"
+          },
+          "description" : "The concept name in the base schema of a taxonomy exluding the namespace, such as Assets or Liabilities. Use this to search across multiple taxonomies where the local name is known to be consistent over time.",
+          "example" : "Assets"
+        }, {
+          "in" : "query",
+          "name" : "fields",
+          "required" : true,
+          "style" : "form",
+          "explode" : false,
+          "allowEmptyValue" : false,
+          "schema" : {
+            "$ref" : "#/components/schemas/reference_fields"
+          }
+        } ],
+        "responses" : {
+          "200" : {
+            "description" : "__concept details__ successfully accepted",
+            "content" : {
+              "application/json" : {
+                "schema" : {
+                  "type" : "object",
+                  "properties" : {
+                    "paging" : {
+                      "$ref" : "#/components/schemas/paging"
+                    },
+                    "data" : {
+                      "type" : "array",
+                      "items" : {
+                        "$ref" : "#/components/schemas/reference_concept_details"
+                      }
+                    }
+                  }
+                }
+              }
+            }
+          },
+          "400" : {
+            "$ref" : "#/components/responses/bad_request"
+          },
+          "401" : {
+            "$ref" : "#/components/responses/bad_token"
+          },
+          "405" : {
+            "$ref" : "#/components/responses/method_not_allowed"
+          },
+          "500" : {
+            "$ref" : "#/components/responses/internal_server_error"
+          }
+        }
+      }
+    },
+    "/api/v1/dts/{dts.id}/network" : {
+      "summary" : "Request network from XBRL filings based on a provided dts.",
+      "get" : {
+        "operationId" : "getNetworkDetailsByDTS",
+        "tags" : [ "DTS" ],
+        "security" : [ {
+          "bearerAuth" : [ ]
+        } ],
+        "description" : "Request all the networks in a DTS.\n",
+        "parameters" : [ {
+          "name" : "dts.id",
+          "in" : "path",
+          "required" : true,
+          "schema" : {
+            "type" : "integer"
+          },
+          "description" : "The dts identifier for a given group of taxonomies. XBRL facts and linkbases are typically associated with a given report that is asscociated with a dts.",
+          "example" : 321964
+        }, {
+          "in" : "query",
+          "name" : "fields",
+          "required" : true,
+          "style" : "form",
+          "explode" : false,
+          "allowEmptyValue" : false,
+          "schema" : {
+            "$ref" : "#/components/schemas/network_con_relationship_fields"
+          }
+        } ],
+        "responses" : {
+          "200" : {
+            "description" : "__concept details__ successfully accepted",
+            "content" : {
+              "application/json" : {
+                "schema" : {
+                  "type" : "object",
+                  "properties" : {
+                    "paging" : {
+                      "$ref" : "#/components/schemas/paging"
+                    },
+                    "data" : {
+                      "type" : "array",
+                      "items" : {
+                        "$ref" : "#/components/schemas/network_details"
+                      }
+                    }
+                  }
+                }
+              }
+            }
+          },
+          "400" : {
+            "$ref" : "#/components/responses/bad_request"
+          },
+          "401" : {
+            "$ref" : "#/components/responses/bad_token"
+          },
+          "405" : {
+            "$ref" : "#/components/responses/method_not_allowed"
+          },
+          "500" : {
+            "$ref" : "#/components/responses/internal_server_error"
+          }
+        }
+      }
+    },
+    "/api/v1/dts/{dts.id}/network/search" : {
+      "summary" : "Request network details from XBRL filings based on a provided dts.",
+      "get" : {
+        "operationId" : "getNetworkDetailsWithSearchByDTS",
+        "tags" : [ "DTS" ],
+        "security" : [ {
+          "bearerAuth" : [ ]
+        } ],
+        "description" : "Request all the networks in a DTS.\n",
+        "parameters" : [ {
+          "name" : "dts.id",
+          "in" : "path",
+          "required" : true,
+          "schema" : {
+            "type" : "integer"
+          },
+          "description" : "The dts identifier for a given group of taxonomies. XBRL facts and linkbases are typically associated with a given report that is asscociated with a dts.",
+          "example" : 321964
+        }, {
+          "$ref" : "#/components/parameters/network.id_Param"
+        }, {
+          "$ref" : "#/components/parameters/network.role-uri_Param"
+        }, {
+          "$ref" : "#/components/parameters/network.arcrole-uri_Param"
+        }, {
+          "$ref" : "#/components/parameters/network.link-name_Param"
+        }, {
+          "$ref" : "#/components/parameters/relationship.id_Param"
+        }, {
+          "$ref" : "#/components/parameters/relationship.order_Param"
+        }, {
+          "$ref" : "#/components/parameters/relationship.preferred-label_Param"
+        }, {
+          "$ref" : "#/components/parameters/relationship.source-concept-id_Param"
+        }, {
+          "$ref" : "#/components/parameters/relationship.source-name_Param"
+        }, {
+          "$ref" : "#/components/parameters/relationship.source-namespace_Param"
+        }, {
+          "$ref" : "#/components/parameters/relationship.target-concept-id_Param"
+        }, {
+          "$ref" : "#/components/parameters/relationship.target-name_Param"
+        }, {
+          "$ref" : "#/components/parameters/relationship.target-namespace_Param"
+        }, {
+          "$ref" : "#/components/parameters/relationship.tree-depth_Param"
+        }, {
+          "$ref" : "#/components/parameters/relationship.tree-sequence_Param"
+        }, {
+          "in" : "query",
+          "name" : "fields",
+          "required" : true,
+          "style" : "form",
+          "explode" : false,
+          "allowEmptyValue" : false,
+          "schema" : {
+            "$ref" : "#/components/schemas/network_con_relationship_fields"
+          }
+        } ],
+        "responses" : {
+          "200" : {
+            "description" : "__concept details__ successfully accepted",
+            "content" : {
+              "application/json" : {
+                "schema" : {
+                  "type" : "object",
+                  "properties" : {
+                    "paging" : {
+                      "$ref" : "#/components/schemas/paging"
+                    },
+                    "data" : {
+                      "type" : "array",
+                      "items" : {
+                        "$ref" : "#/components/schemas/network_details"
+                      }
+                    }
+                  }
+                }
+              }
+            }
+          },
+          "400" : {
+            "$ref" : "#/components/responses/bad_request"
+          },
+          "401" : {
+            "$ref" : "#/components/responses/bad_token"
+          },
+          "405" : {
+            "$ref" : "#/components/responses/method_not_allowed"
+          },
+          "500" : {
+            "$ref" : "#/components/responses/internal_server_error"
+          }
+        }
+      }
+    },
+    "/api/v1/concept/search" : {
+      "summary" : "Request errors from XBRL filings based on search parameters.",
+      "get" : {
+        "operationId" : "getConceptDetails",
+        "tags" : [ "Concepts" ],
+        "security" : [ {
+          "bearerAuth" : [ ]
+        } ],
+        "description" : "Allows searching for concept details for a given dts, or across a set of taxonomies. If searching for concept details it highly recomended that a dts identifier is used to limit the concept search. This is specifically the case if returning label data. If no dts is presribed and the details of Assets are requested the API will attempt to return all the labels used for Assets in every single filing made.\n",
+        "parameters" : [ {
+          "$ref" : "#/components/parameters/concept.id_Param"
+        }, {
+          "$ref" : "#/components/parameters/concept.local-name_Param"
+        }, {
+          "$ref" : "#/components/parameters/concept.namespace_Param"
+        }, {
+          "$ref" : "#/components/parameters/dts.entry-point_Param"
+        }, {
+          "$ref" : "#/components/parameters/dts.hash_Param"
+        }, {
+          "$ref" : "#/components/parameters/dts.id_Param"
+        }, {
+          "$ref" : "#/components/parameters/dts.target-namespace_Param"
+        }, {
+          "in" : "query",
+          "name" : "fields",
+          "required" : true,
+          "style" : "form",
+          "explode" : false,
+          "allowEmptyValue" : false,
+          "schema" : {
+            "$ref" : "#/components/schemas/concept_fields"
+          }
+        } ],
+        "responses" : {
+          "200" : {
+            "description" : "__concept details__ successfully accepted",
+            "content" : {
+              "application/json" : {
+                "schema" : {
+                  "type" : "object",
+                  "properties" : {
+                    "paging" : {
+                      "$ref" : "#/components/schemas/paging"
+                    },
+                    "data" : {
+                      "type" : "array",
+                      "items" : {
+                        "$ref" : "#/components/schemas/concept_details"
+                      }
+                    }
+                  }
+                }
+              }
+            }
+          },
+          "400" : {
+            "$ref" : "#/components/responses/bad_request"
+          },
+          "401" : {
+            "$ref" : "#/components/responses/bad_token"
+          },
+          "405" : {
+            "$ref" : "#/components/responses/method_not_allowed"
+          },
+          "500" : {
+            "$ref" : "#/components/responses/internal_server_error"
+          }
+        }
+      }
+    },
+    "/api/v1/concept/{concept.local-name}/search" : {
+      "summary" : "Request errors from XBRL filings based on search parameters.",
+      "get" : {
+        "operationId" : "getConceptDetailsByName",
+        "tags" : [ "Concepts" ],
+        "security" : [ {
+          "bearerAuth" : [ ]
+        } ],
+        "description" : "Allows searching for concept details in _XBRL reports.\n",
+        "parameters" : [ {
+          "name" : "concept.local-name",
+          "in" : "path",
+          "description" : "The concept name in the base schema of a taxonomy exluding the namespace, such as Assets or Liabilities. Use this to search across multiple taxonomies where the local name is known to be consistent over time.",
+          "required" : true,
+          "schema" : {
+            "type" : "string"
+          }
+        }, {
+          "$ref" : "#/components/parameters/concept.id_Param"
+        }, {
+          "$ref" : "#/components/parameters/concept.local-name_Param"
+        }, {
+          "$ref" : "#/components/parameters/concept.namespace_Param"
+        }, {
+          "$ref" : "#/components/parameters/dts.entry-point_Param"
+        }, {
+          "$ref" : "#/components/parameters/dts.hash_Param"
+        }, {
+          "$ref" : "#/components/parameters/dts.id_Param"
+        }, {
+          "$ref" : "#/components/parameters/dts.target-namespace_Param"
+        }, {
+          "in" : "query",
+          "name" : "fields",
+          "required" : true,
+          "style" : "form",
+          "explode" : false,
+          "allowEmptyValue" : false,
+          "schema" : {
+            "$ref" : "#/components/schemas/concept_fields"
+          },
+          "description" : "List of concepts to return."
+        } ],
+        "responses" : {
+          "200" : {
+            "description" : "__concept details__ successfully accepted",
+            "content" : {
+              "application/json" : {
+                "schema" : {
+                  "type" : "object",
+                  "properties" : {
+                    "paging" : {
+                      "$ref" : "#/components/schemas/paging"
+                    },
+                    "data" : {
+                      "type" : "array",
+                      "items" : {
+                        "$ref" : "#/components/schemas/concept_details"
+                      }
+                    }
+                  }
+                }
+              }
+            }
+          },
+          "400" : {
+            "$ref" : "#/components/responses/bad_request"
+          },
+          "401" : {
+            "$ref" : "#/components/responses/bad_token"
+          },
+          "405" : {
+            "$ref" : "#/components/responses/method_not_allowed"
+          },
+          "500" : {
+            "$ref" : "#/components/responses/internal_server_error"
+          }
+        }
+      }
+    },
+    "/api/v1/label/{dts.id}/search" : {
+      "summary" : "Request errors from XBRL filings based on search parameters.",
+      "get" : {
+        "operationId" : "getlabelsBasedOnDTS",
+        "tags" : [ "Labels" ],
+        "security" : [ {
+          "bearerAuth" : [ ]
+        } ],
+        "description" : "Allows searching for concept details in XBRL reports by dts id.\n",
+        "parameters" : [ {
+          "name" : "dts.id",
+          "in" : "path",
+          "required" : true,
+          "schema" : {
+            "type" : "integer"
+          },
+          "description" : "The dts identifier for a given group of taxonomies. XBRL facts and linkbases are typically associated with a given report that is asscociated with a dts.",
+          "example" : 321964
+        }, {
+          "$ref" : "#/components/parameters/label.text_Param"
+        }, {
+          "$ref" : "#/components/parameters/label.role_Param"
+        }, {
+          "$ref" : "#/components/parameters/concept.id_Param"
+        }, {
+          "$ref" : "#/components/parameters/concept.local-name_Param"
+        }, {
+          "$ref" : "#/components/parameters/dts.entry-point_Param"
+        }, {
+          "in" : "query",
+          "name" : "fields",
+          "required" : true,
+          "style" : "form",
+          "explode" : false,
+          "allowEmptyValue" : false,
+          "schema" : {
+            "$ref" : "#/components/schemas/label_fields"
+          },
+          "description" : "List of concepts to return."
+        } ],
+        "responses" : {
+          "200" : {
+            "description" : "__concept details__ successfully accepted",
+            "content" : {
+              "application/json" : {
+                "schema" : {
+                  "type" : "object",
+                  "properties" : {
+                    "paging" : {
+                      "$ref" : "#/components/schemas/paging"
+                    },
+                    "data" : {
+                      "type" : "array",
+                      "items" : {
+                        "$ref" : "#/components/schemas/label_details_search"
+                      }
+                    }
+                  }
+                }
+              }
+            }
+          },
+          "400" : {
+            "$ref" : "#/components/responses/bad_request"
+          },
+          "401" : {
+            "$ref" : "#/components/responses/bad_token"
+          },
+          "405" : {
+            "$ref" : "#/components/responses/method_not_allowed"
+          },
+          "500" : {
+            "$ref" : "#/components/responses/internal_server_error"
+          }
+        }
+      }
+    },
+    "/api/v1/label/search" : {
+      "summary" : "Request errors from XBRL filings based on search parameters.",
+      "get" : {
+        "operationId" : "getlabels",
+        "tags" : [ "Labels" ],
+        "security" : [ {
+          "bearerAuth" : [ ]
+        } ],
+        "description" : "Allows searching for concept details in XBRL reports.\n",
+        "parameters" : [ {
+          "name" : "dts.id",
+          "in" : "path",
+          "required" : true,
+          "schema" : {
+            "type" : "integer"
+          },
+          "description" : "The dts identifier for a given group of taxonomies. XBRL facts and linkbases are typically associated with a given report that is asscociated with a dts.",
+          "example" : 321964
+        }, {
+          "$ref" : "#/components/parameters/label.text_Param"
+        }, {
+          "$ref" : "#/components/parameters/label.role_Param"
+        }, {
+          "$ref" : "#/components/parameters/concept.id_Param"
+        }, {
+          "$ref" : "#/components/parameters/concept.local-name_Param"
+        }, {
+          "$ref" : "#/components/parameters/dts.entry-point_Param"
+        }, {
+          "$ref" : "#/components/parameters/dts.id_Param"
+        }, {
+          "in" : "query",
+          "name" : "fields",
+          "required" : true,
+          "style" : "form",
+          "explode" : false,
+          "allowEmptyValue" : false,
+          "schema" : {
+            "$ref" : "#/components/schemas/label_fields"
+          },
+          "description" : "List of label fields to return."
+        } ],
+        "responses" : {
+          "200" : {
+            "description" : "__label details__ successfully accepted",
+            "content" : {
+              "application/json" : {
+                "schema" : {
+                  "type" : "object",
+                  "properties" : {
+                    "paging" : {
+                      "$ref" : "#/components/schemas/paging"
+                    },
+                    "data" : {
+                      "type" : "array",
+                      "items" : {
+                        "$ref" : "#/components/schemas/label_details_search"
+                      }
+                    }
+                  }
+                }
+              }
+            }
+          },
+          "400" : {
+            "$ref" : "#/components/responses/bad_request"
+          },
+          "401" : {
+            "$ref" : "#/components/responses/bad_token"
+          },
+          "405" : {
+            "$ref" : "#/components/responses/method_not_allowed"
+          },
+          "500" : {
+            "$ref" : "#/components/responses/internal_server_error"
+          }
+        }
+      }
+    },
+    "/api/v1/network/{network.id}/relationship/search" : {
+      "summary" : "Request errors from XBRL filings based on search parameters.",
+      "get" : {
+        "operationId" : "getNetworkRelationships",
+        "tags" : [ "Networks" ],
+        "security" : [ {
+          "bearerAuth" : [ ]
+        } ],
+        "description" : "Allows searching for all the chracteristics and relationships in a specific network and filtering those results based on charateristics of the relationships in the network. \n",
+        "parameters" : [ {
+          "name" : "network.id",
+          "in" : "path",
+          "required" : true,
+          "schema" : {
+            "type" : "integer"
+          },
+          "description" : "Unique identifier used to identify a specific network. A different identifier is used for networks with the same role but different linkbase types.",
+          "example" : 27624452
+        }, {
+          "$ref" : "#/components/parameters/dts.entry-point_Param"
+        }, {
+          "$ref" : "#/components/parameters/dts.id_Param"
+        }, {
+          "$ref" : "#/components/parameters/network.arcrole-uri_Param"
+        }, {
+          "$ref" : "#/components/parameters/network.id_Param"
+        }, {
+          "$ref" : "#/components/parameters/network.link-name_Param"
+        }, {
+          "$ref" : "#/components/parameters/network.role-uri_Param"
+        }, {
+          "$ref" : "#/components/parameters/relationship.id_Param"
+        }, {
+          "$ref" : "#/components/parameters/relationship.order_Param"
+        }, {
+          "$ref" : "#/components/parameters/relationship.preferred-label_Param"
+        }, {
+          "$ref" : "#/components/parameters/relationship.source-concept-id_Param"
+        }, {
+          "$ref" : "#/components/parameters/relationship.source-name_Param"
+        }, {
+          "$ref" : "#/components/parameters/relationship.source-namespace_Param"
+        }, {
+          "$ref" : "#/components/parameters/relationship.target-concept-id_Param"
+        }, {
+          "$ref" : "#/components/parameters/relationship.target-name_Param"
+        }, {
+          "$ref" : "#/components/parameters/relationship.target-namespace_Param"
+        }, {
+          "$ref" : "#/components/parameters/relationship.tree-depth_Param"
+        }, {
+          "$ref" : "#/components/parameters/relationship.tree-sequence_Param"
+        }, {
+          "in" : "query",
+          "name" : "fields",
+          "style" : "form",
+          "explode" : false,
+          "allowEmptyValue" : false,
+          "schema" : {
+            "$ref" : "#/components/schemas/network_con_relationship_fields"
+          },
+          "description" : "List of concepts to return."
+        } ],
+        "responses" : {
+          "200" : {
+            "description" : "__network details__ successfully accepted",
+            "content" : {
+              "application/json" : {
+                "schema" : {
+                  "type" : "object",
+                  "properties" : {
+                    "paging" : {
+                      "$ref" : "#/components/schemas/paging"
+                    },
+                    "data" : {
+                      "type" : "array",
+                      "items" : {
+                        "$ref" : "#/components/schemas/network_details"
+                      }
+                    }
+                  }
+                }
+              }
+            }
+          },
+          "400" : {
+            "$ref" : "#/components/responses/bad_request"
+          },
+          "401" : {
+            "$ref" : "#/components/responses/bad_token"
+          },
+          "405" : {
+            "$ref" : "#/components/responses/method_not_allowed"
+          },
+          "500" : {
+            "$ref" : "#/components/responses/internal_server_error"
+          }
+        }
+      }
+    },
+    "/api/v1/network/relationship/search" : {
+      "summary" : "Request networks and relationships from XBRL filings based on search parameters.",
+      "get" : {
+        "operationId" : "getNetworkRelationshipsNoID",
+        "tags" : [ "Networks" ],
+        "security" : [ {
+          "bearerAuth" : [ ]
+        } ],
+        "description" : "Allows searching for a specific network based on network and relationship chracteristics.\n",
+        "parameters" : [ {
+          "$ref" : "#/components/parameters/dts.entry-point_Param"
+        }, {
+          "$ref" : "#/components/parameters/dts.id_Param"
+        }, {
+          "$ref" : "#/components/parameters/network.arcrole-uri_Param"
+        }, {
+          "$ref" : "#/components/parameters/network.id_Param"
+        }, {
+          "$ref" : "#/components/parameters/network.link-name_Param"
+        }, {
+          "$ref" : "#/components/parameters/network.role-uri_Param"
+        }, {
+          "$ref" : "#/components/parameters/relationship.id_Param"
+        }, {
+          "$ref" : "#/components/parameters/relationship.order_Param"
+        }, {
+          "$ref" : "#/components/parameters/relationship.preferred-label_Param"
+        }, {
+          "$ref" : "#/components/parameters/relationship.source-concept-id_Param"
+        }, {
+          "$ref" : "#/components/parameters/relationship.source-name_Param"
+        }, {
+          "$ref" : "#/components/parameters/relationship.source-namespace_Param"
+        }, {
+          "$ref" : "#/components/parameters/relationship.target-concept-id_Param"
+        }, {
+          "$ref" : "#/components/parameters/relationship.target-name_Param"
+        }, {
+          "$ref" : "#/components/parameters/relationship.target-namespace_Param"
+        }, {
+          "$ref" : "#/components/parameters/relationship.tree-depth_Param"
+        }, {
+          "$ref" : "#/components/parameters/relationship.tree-sequence_Param"
+        }, {
+          "in" : "query",
+          "name" : "fields",
+          "required" : true,
+          "style" : "form",
+          "explode" : false,
+          "allowEmptyValue" : false,
+          "schema" : {
+            "$ref" : "#/components/schemas/network_con_relationship_fields"
+          },
+          "description" : "List of concepts to return."
+        } ],
+        "responses" : {
+          "200" : {
+            "description" : "__network details__ successfully accepted",
+            "content" : {
+              "application/json" : {
+                "schema" : {
+                  "type" : "object",
+                  "properties" : {
+                    "paging" : {
+                      "$ref" : "#/components/schemas/paging"
+                    },
+                    "data" : {
+                      "type" : "array",
+                      "items" : {
+                        "$ref" : "#/components/schemas/network_details"
+                      }
+                    }
+                  }
+                }
+              }
+            }
+          },
+          "400" : {
+            "$ref" : "#/components/responses/bad_request"
+          },
+          "401" : {
+            "$ref" : "#/components/responses/bad_token"
+          },
+          "405" : {
+            "$ref" : "#/components/responses/method_not_allowed"
+          },
+          "500" : {
+            "$ref" : "#/components/responses/internal_server_error"
+          }
+        }
+      }
+    },
+    "/api/v1/network/{network.id}" : {
+      "summary" : "Request networks  from XBRL filings based on search parameters.",
+      "get" : {
+        "operationId" : "getNetworkOnID",
+        "tags" : [ "Networks" ],
+        "security" : [ {
+          "bearerAuth" : [ ]
+        } ],
+        "description" : "Returns the characteristics of a specific network. This does not include the relationships. Use the endpoint /api/v1/network/{network.id}/relationship/search to get relationship information about the network.\n",
+        "parameters" : [ {
+          "name" : "network.id",
+          "in" : "path",
+          "required" : true,
+          "schema" : {
+            "type" : "integer"
+          },
+          "description" : "Unique identifier used to identify a specific network. A different identifier is used for networks with the same role but different linkbase types.",
+          "example" : 27624452
+        }, {
+          "in" : "query",
+          "name" : "fields",
+          "required" : true,
+          "style" : "form",
+          "explode" : false,
+          "allowEmptyValue" : false,
+          "schema" : {
+            "$ref" : "#/components/schemas/network_fields"
+          },
+          "description" : "List of concepts to return."
+        } ],
+        "responses" : {
+          "200" : {
+            "description" : "__network details__ successfully accepted",
+            "content" : {
+              "application/json" : {
+                "schema" : {
+                  "type" : "object",
+                  "properties" : {
+                    "paging" : {
+                      "$ref" : "#/components/schemas/paging"
+                    },
+                    "data" : {
+                      "type" : "array",
+                      "items" : {
+                        "$ref" : "#/components/schemas/network_only_details"
+                      }
+                    }
+                  }
+                }
+              }
+            }
+          },
+          "400" : {
+            "$ref" : "#/components/responses/bad_request"
+          },
+          "401" : {
+            "$ref" : "#/components/responses/bad_token"
+          },
+          "405" : {
+            "$ref" : "#/components/responses/method_not_allowed"
+          },
+          "500" : {
+            "$ref" : "#/components/responses/internal_server_error"
+          }
+        }
+      }
+    },
+    "/api/v1/relationship/search" : {
+      "summary" : "Request networks and relationships from XBRL filings based on search parameters.",
+      "get" : {
+        "operationId" : "getRelationships",
+        "tags" : [ "Relationships" ],
+        "security" : [ {
+          "bearerAuth" : [ ]
+        } ],
+        "description" : "Allows searching for a specific set of  relationships based on characteristics of the relationship.\n",
+        "parameters" : [ {
+          "$ref" : "#/components/parameters/dts.id_Param"
+        }, {
+          "$ref" : "#/components/parameters/network.arcrole-uri_Param"
+        }, {
+          "$ref" : "#/components/parameters/network.id_Param"
+        }, {
+          "$ref" : "#/components/parameters/network.link-name_Param"
+        }, {
+          "$ref" : "#/components/parameters/network.role-uri_Param"
+        }, {
+          "$ref" : "#/components/parameters/relationship.id_Param"
+        }, {
+          "$ref" : "#/components/parameters/relationship.order_Param"
+        }, {
+          "$ref" : "#/components/parameters/relationship.preferred-label_Param"
+        }, {
+          "$ref" : "#/components/parameters/relationship.source-concept-id_Param"
+        }, {
+          "$ref" : "#/components/parameters/relationship.source-name_Param"
+        }, {
+          "$ref" : "#/components/parameters/relationship.source-namespace_Param"
+        }, {
+          "$ref" : "#/components/parameters/relationship.target-concept-id_Param"
+        }, {
+          "$ref" : "#/components/parameters/relationship.target-name_Param"
+        }, {
+          "$ref" : "#/components/parameters/relationship.target-namespace_Param"
+        }, {
+          "$ref" : "#/components/parameters/relationship.tree-depth_Param"
+        }, {
+          "$ref" : "#/components/parameters/relationship.tree-sequence_Param"
+        }, {
+          "in" : "query",
+          "name" : "fields",
+          "required" : true,
+          "style" : "form",
+          "explode" : false,
+          "allowEmptyValue" : false,
+          "schema" : {
+            "$ref" : "#/components/schemas/relationship_fields"
+          },
+          "description" : "List of concepts to return."
+        } ],
+        "responses" : {
+          "200" : {
+            "description" : "__network details__ successfully accepted",
+            "content" : {
+              "application/json" : {
+                "schema" : {
+                  "type" : "object",
+                  "properties" : {
+                    "paging" : {
+                      "$ref" : "#/components/schemas/paging"
+                    },
+                    "data" : {
+                      "type" : "array",
+                      "items" : {
+                        "$ref" : "#/components/schemas/relationship_details_search"
+                      }
+                    }
+                  }
+                }
+              }
+            }
+          },
+          "400" : {
+            "$ref" : "#/components/responses/bad_request"
+          },
+          "401" : {
+            "$ref" : "#/components/responses/bad_token"
+          },
+          "405" : {
+            "$ref" : "#/components/responses/method_not_allowed"
+          },
+          "500" : {
+            "$ref" : "#/components/responses/internal_server_error"
+          }
+        }
+      }
+    },
+    "/api/v1/relationship/tree/search" : {
+      "summary" : "Request networks and relationships from XBRL filings based on search parameters.",
+      "get" : {
+        "operationId" : "getRelationshipsAsTree",
+        "tags" : [ "Relationships" ],
+        "security" : [ {
+          "bearerAuth" : [ ]
+        } ],
+        "description" : "Allows searching for a specific set of  relationships based on characteristics of the relationship and returning the data as a tree in different formats.\n",
+        "parameters" : [ {
+          "$ref" : "#/components/parameters/dts.id_Param"
+        }, {
+          "$ref" : "#/components/parameters/network.arcrole-uri_Param"
+        }, {
+          "$ref" : "#/components/parameters/network.id_Param"
+        }, {
+          "$ref" : "#/components/parameters/network.link-name_Param"
+        }, {
+          "$ref" : "#/components/parameters/network.role-uri_Param"
+        }, {
+          "$ref" : "#/components/parameters/relationship.id_Param"
+        }, {
+          "$ref" : "#/components/parameters/relationship.order_Param"
+        }, {
+          "$ref" : "#/components/parameters/relationship.preferred-label_Param"
+        }, {
+          "$ref" : "#/components/parameters/relationship.source-concept-id_Param"
+        }, {
+          "$ref" : "#/components/parameters/relationship.source-name_Param"
+        }, {
+          "$ref" : "#/components/parameters/relationship.source-namespace_Param"
+        }, {
+          "$ref" : "#/components/parameters/relationship.target-concept-id_Param"
+        }, {
+          "$ref" : "#/components/parameters/relationship.target-name_Param"
+        }, {
+          "$ref" : "#/components/parameters/relationship.target-namespace_Param"
+        }, {
+          "$ref" : "#/components/parameters/relationship.tree-depth_Param"
+        }, {
+          "$ref" : "#/components/parameters/relationship.tree-sequence_Param"
+        }, {
+          "in" : "query",
+          "name" : "format",
+          "schema" : {
+            "type" : "string",
+            "enum" : [ "flat", "fancytree", "standard" ]
+          },
+          "example" : "standard",
+          "description" : "Allows the list of relations hips to be returned in a tree format or be flat. Select from the following\n  * flat: Returns a list of relationship pairs. \n  * standard: Returns as a standard tree. (No paging data is returned)\n  * fancytree: Returns a network tree in the format for the fancytree javasript format. (No paging data is returned so that the results can go straight into a fancy tree object)\n"
+        }, {
+          "in" : "query",
+          "name" : "fields",
+          "required" : true,
+          "style" : "form",
+          "explode" : false,
+          "allowEmptyValue" : false,
+          "schema" : {
+            "$ref" : "#/components/schemas/relationship_fields"
+          },
+          "description" : "List of concepts to return."
+        } ],
+        "responses" : {
+          "200" : {
+            "description" : "__network details__ successfully accepted",
+            "content" : {
+              "application/json" : {
+                "schema" : {
+                  "type" : "object",
+                  "properties" : {
+                    "paging" : {
+                      "$ref" : "#/components/schemas/paging"
+                    },
+                    "data" : {
+                      "type" : "array",
+                      "items" : {
+                        "$ref" : "#/components/schemas/relationship_details_search"
+                      }
+                    }
+                  }
+                }
+              }
+            }
+          },
+          "400" : {
+            "$ref" : "#/components/responses/bad_request"
+          },
+          "401" : {
+            "$ref" : "#/components/responses/bad_token"
+          },
+          "405" : {
+            "$ref" : "#/components/responses/method_not_allowed"
+          },
+          "500" : {
+            "$ref" : "#/components/responses/internal_server_error"
+          }
+        }
+      }
+    },
+    "/api/v1/document/search" : {
+      "summary" : "Request networks and relationships from XBRL filings based on search parameters.",
+      "get" : {
+        "operationId" : "getDocumentInfo",
+        "tags" : [ "Documents" ],
+        "security" : [ {
+          "bearerAuth" : [ ]
+        } ],
+        "description" : "Allows searching for XBRL documents and their content.\n",
+        "parameters" : [ {
+          "$ref" : "#/components/parameters/document.top-level_Param"
+        }, {
+          "$ref" : "#/components/parameters/document.uri_Param"
+        }, {
+          "$ref" : "#/components/parameters/dts.id_Param"
+        }, {
+          "in" : "query",
+          "name" : "fields",
+          "required" : true,
+          "style" : "form",
+          "explode" : false,
+          "allowEmptyValue" : false,
+          "schema" : {
+            "$ref" : "#/components/schemas/document_fields"
+          },
+          "description" : "List of concepts to return."
+        } ],
+        "responses" : {
+          "200" : {
+            "description" : "__network details__ successfully accepted",
+            "content" : {
+              "application/json" : {
+                "schema" : {
+                  "type" : "object",
+                  "properties" : {
+                    "paging" : {
+                      "$ref" : "#/components/schemas/paging"
+                    },
+                    "data" : {
+                      "type" : "array",
+                      "items" : {
+                        "$ref" : "#/components/schemas/document_details"
+                      }
+                    }
+                  }
+                }
+              }
+            }
+          },
+          "400" : {
+            "$ref" : "#/components/responses/bad_request"
+          },
+          "401" : {
+            "$ref" : "#/components/responses/bad_token"
+          },
+          "405" : {
+            "$ref" : "#/components/responses/method_not_allowed"
+          },
+          "500" : {
+            "$ref" : "#/components/responses/internal_server_error"
+          }
+        }
+      }
     }
   },
   "components" : {
