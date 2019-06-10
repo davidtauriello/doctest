@@ -26,7 +26,7 @@ paths:
       operationId: tokenUrl
       tags: [oauth2]
       security: []
-      description: >
+      description: |
         Assuming a valid login exists, this route allows a trusted client to aquire an access token for itself, or to request an access token for a specific user. You may send both `client_credentials` grants and `password` grants via the following: 
         
       requestBody:
@@ -79,7 +79,7 @@ paths:
                     example: bearer
                     description: >
                       The token_type will always be bearer. The access_token is considered a bearer token, and thus should be placed in all subqequent requests to the resource endpoints by using the following header:
-                        * Authorization: Bearer [token]
+                      
                   
         '400':
           $ref: '#/components/responses/bad_request'
