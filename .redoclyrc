@@ -1,8 +1,0 @@
-specFileName: petstore.json
-apiTitle: Swagger Petstore
-splitSpec: false
-codeSamples: false
-swaggerUI: true
-travis: true
-repo: davidtauriello/doctest
-oasVersion: 3.0.0
