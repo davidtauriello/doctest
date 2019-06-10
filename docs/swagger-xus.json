@@ -2876,8 +2876,7 @@
         "type" : "array",
         "items" : {
           "type" : "string",
-          "default" : "document.*",
-          "enum" : [ "document.top-level", "document.tree-level", "document.tree-order", "document.type", "document.uri", "dts.id" ]
+          "enum" : [ "document.top-level", "document.tree-level", "document.tree-order", "document.type", "document.uri", "dts.id", "document.*" ]
         }
       },
       "dts_fields" : {
