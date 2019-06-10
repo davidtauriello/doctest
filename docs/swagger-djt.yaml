@@ -9,55 +9,6 @@ info:
   description: |
     This API defines the XBRL US API. 
 
-    ## Authorization Flow
-
-    We use [OAuth2 JWT](https://jwt.io/) flows to secure interactions.
-
-    ## Example Interactions
-
-    In this section, we will provide __CURL__ examples for typical __XBRL US API__ flows. Because XBRL US API is sessionless, each "session" will always begin with the [OAuth2 JWT Access Token Flow](https://jwt.io/introduction).
-
-    ### Access Token Flow
-
-    This flow shows the steps required to interact with the API
-
-    1. Send an HTTP `POST` request to the tokenUrl: `/oauth2/token`:
-      ```http
-      POST /oauth2/token HTTP/1.1 
-      Host: <api.xbrl.us> 
-      Content-Type: application/x-www-form-urlencoded 
-      Body: {
-        "grant_type": password,
-        "client_id": "XBRL US Client",
-        "client_secret": "client secret",
-        "username": "username",
-        "password": "password",
-        "platform": pc
-      }
-      ```
-    2. Upon a successful authorization grant, the server will respond with an `access_token`:
-      ```http
-      HTTP/1.1 200 OK
-      Request URL: <example.com>/oauth2/token
-      Date: <EEE, dd MMM yyyy HH:mm:ss z>
-      Content-Length: 500
-      Body: {
-        "platform": "pc",
-        "access_token": "eyJ...124nOvc",
-        "refresh_token": "eyJ...124nOvc",
-        "expires_in" : 3600,
-        "refresh_token_expires_in": 10800,
-        "token_type": "bearer"
-      }
-      ```
-    3. Add a new `Authorization` header with type `Bearer` and the contents of the above `access_token`
-      ```http
-      GET </some/route> HTTP/1.1
-      Host: <api.xbrl.us> 
-      Authorization: Bearer yJ...124nOvc
-      Content-Type: application/json; charset=utf-8 
-      Body: <...>
-      ```
 
     Once an `access_token` has been acquired, use it until it returns a `401`. If this occurs, simply request a new token using the credentials from before. 
 
@@ -66,19 +17,7 @@ info:
   contact:
     name: xbrl.us
     email: support@xbrl.us
-tags:
-  - name: oauth2
-    description: Operations to request authorization, receive tokens, and check tokens
-  - name: Facts
-    description: Used to request XBRL Facts
-  - name: Reports
-    description: Used to get information on XBRL reports
-  - name: Assertions
-    description: Used to get information on errors in XBRL reports
-  - name: Concepts
-    description: Used to information about XBRL concepts in a taxonomy
-security:
-  - oauth2: [ROLE_CLIENT, ROLE_USER]
+
 paths:
   /api/v1/document/search:
       summary: Request networks and relationships from XBRL filings based on search parameters.
@@ -127,50 +66,8 @@ paths:
           '500':
             $ref: '#/components/responses/internal_server_error'   
 components:
-  securitySchemes:
-    OAuth2:
-      type: oauth2
-      flows:
-        password:
-          tokenUrl: /oauth2/token
-    bearerAuth:
-      type: http
-      scheme: bearer
-      bearerFormat: JWT
-    
+  
   schemas:
-    authorization_grant:
-      type: object
-      required: [grant_type, client_id, client_secret]
-      properties:
-        grant_type:
-          type: string
-          example: password
-          description: >
-            Used to identify which credentials the authorization server needs to check
-              * `client_credentials` - Requires a client_id and client_secret only
-              * `password` - Requires a username and password as well as client_id and client_secret
-        client_id:
-          type: string
-          example: XBRL US
-          description: Unique identifier agreed upon by **XBRL US** and the 3rd party client
-        client_secret:
-          type: string
-          example: xhOEnAX2M...gaIYLXOvCe25Q
-          format: byte
-          description: Base64 key used to authenticate the 3rd party client
-        username:
-          type: string
-          example: campbell.pryde@xbrl.us
-          description: Unique identifier for a given user
-        password:
-          type: string
-          example: someSecurePassword
-          description: Password used to authenticate the 3rd party user
-        platform:
-          type: string
-          example: pc
-          description: just required
     error_message:
       type: object
       properties:
