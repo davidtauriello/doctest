@@ -4603,7 +4603,7 @@ components:
           schema:
             $ref: '#/components/schemas/error_message'
           example:
-            error: bad_request
+            error1: bad_request
             error_description: Missing a field 'xxx'
     bad_token:
       description: The token is invalid, expired, or corrupted
@@ -4612,7 +4612,7 @@ components:
           schema:
             $ref: '#/components/schemas/error_message'
           example:
-            error: unauthorized,
+            error1: unauthorized,
             error_description: Cannot convert access token to JSON
     unauthorized:
       description: >
@@ -4625,7 +4625,7 @@ components:
           schema:
             $ref: '#/components/schemas/error_message'
           example:
-            error: unauthorized
+            error1: unauthorized
             error_description: Full authentication is required to access this resource
     not_found:
       description: This resource doesn't exist or you don't have the permissions to view it
@@ -4634,7 +4634,7 @@ components:
           schema:
             $ref: '#/components/schemas/error_message'
           example: 
-            error_: not_found
+            error1: not_found
             error_description: An entity with that name could not be found
     method_not_allowed:
       description: Method not allowed
@@ -4643,7 +4643,7 @@ components:
           schema:
             $ref: '#/components/schemas/error_message'
           example: 
-            error: method_not_allowed
+            error1: method_not_allowed
             error_description: Request method 'DELETE' not supported
     internal_server_error:
       description: Internal error, not the fault of the client
@@ -4652,5 +4652,5 @@ components:
           schema:
             $ref: '#/components/schemas/error_message'
           example: 
-            error: internal_error
+            error1: internal_error
             error_description: Unknown error, try again later
