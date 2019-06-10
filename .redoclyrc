@@ -1,8 +1,8 @@
-specFileName: petstore.yaml
+specFileName: petstore2.yaml
 apiTitle: Swagger Petstore
 splitSpec: false
 codeSamples: false
 swaggerUI: true
 travis: true
 repo: davidtauriello/doctest
-oasVersion: 3.0.0
+oasVersion: '2.0'
