@@ -108,7 +108,7 @@ components:
         client_id:
           type: string
           example: XBRL US
-          description: Unique identifier agreed upon by **XBRL US** and the 3rd party client
+          description: Unique identifier agreed upon by XBRL US and the 3rd party client
         client_secret:
           type: string
           example: xhOEnAX2M...gaIYLXOvCe25Q
