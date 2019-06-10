@@ -28,10 +28,7 @@ paths:
       security: []
       description: >
         Assuming a valid login exists, this route allows a trusted client to aquire an access token for itself, or to request an access token for a specific user. You may send both `client_credentials` grants and `password` grants via the following: 
-         * __application/x-www-form-urlencoded__
-
-
-        __[Read more](https://oauth.net/2/grant-types/)__
+        
       requestBody:
         content:
           application/json:
@@ -52,7 +49,7 @@ paths:
       responses:
         '200':
           description: > 
-            The authorization grant has been validated, and an access token is granted. __[Read more](https://jwt.io/introduction/)__
+            The authorization grant has been validated, and an access token is granted. [Read more](https://jwt.io/introduction/)
           content:
             application/json:
               schema:
@@ -65,12 +62,12 @@ paths:
                     type: string
                     format: byte
                     example: eyJ...124nOvc
-                    description: A JWT access token. __[Read more](https://jwt.io/)__
+                    description: A JWT access token. [Read more](https://jwt.io/)
                   refresh_token:
                     type: string
                     format: byte
                     example: eyJ...124nOvc
-                    description: A JWT access token. __[Read more](https://jwt.io/)__
+                    description: A JWT access token. [Read more](https://jwt.io/)
                   expires_in:
                     type: integer
                     example: 3600
