@@ -2,7 +2,7 @@ openapi: 3.0.0
 # XBRL US API
 servers:
   - description: Running this application XBRL US server
-    url: 'https://api.xbrl.us'
+    url: 'https://api.xbrl.us/'
 info:
   version: "V1"
   title: XBRL US API
@@ -897,7 +897,7 @@ paths:
         security:
           - bearerAuth: []
         description: >
-          Allows searching for errors in _XBRL reports_ based on validation frameworks used by regulators and Data Quality Committees. The API allows searching for errors by report, by error code, sverity of the error etc.
+          Allows searching for errors in _XBRL reports_ based on validation frameworks used by regulators and Data Quality Committees. The API allows searching for errors by report, by error code, sverity of the error etc. .
         parameters:
           - $ref: '#/components/parameters/assertion.code_Param' 
           - $ref: '#/components/parameters/assertion.severity_Param'
@@ -981,13 +981,13 @@ paths:
         responses:
           '200':
             description: __validation details__ successfully processed
-            ##content:
-              ##application/xml:
-              ##  schema:
-              ##    $ref: '#/components/schemas/results'
-              ##application/json:
-              ##  schema:
-              ##    $ref: '#/components/schemas/results'
+            content:
+              application/xml:
+                schema:
+                  $ref: '#/components/schemas/results'
+              application/json:
+                schema:
+                  $ref: '#/components/schemas/results'
             
           '400':
             $ref: '#/components/responses/bad_request'
@@ -2039,7 +2039,7 @@ components:
     error_message:
       type: object
       properties:
-        error1:
+        errors:
           type: string
           description: Identifier for the error
         error_description:
@@ -3023,7 +3023,7 @@ components:
               type: string
               xml:
                 attribute: true
-              example: 'ERROR'
+              example: 'ERRORR'
             validationMessage:
               type: object
               properties:
@@ -4603,7 +4603,7 @@ components:
           schema:
             $ref: '#/components/schemas/error_message'
           example:
-            error1: bad_request
+            error: bad_request
             error_description: Missing a field 'xxx'
     bad_token:
       description: The token is invalid, expired, or corrupted
@@ -4612,7 +4612,7 @@ components:
           schema:
             $ref: '#/components/schemas/error_message'
           example:
-            error1: unauthorized,
+            error: unauthorized,
             error_description: Cannot convert access token to JSON
     unauthorized:
       description: >
@@ -4625,7 +4625,7 @@ components:
           schema:
             $ref: '#/components/schemas/error_message'
           example:
-            error1: unauthorized
+            error: unauthorized
             error_description: Full authentication is required to access this resource
     not_found:
       description: This resource doesn't exist or you don't have the permissions to view it
@@ -4634,7 +4634,7 @@ components:
           schema:
             $ref: '#/components/schemas/error_message'
           example: 
-            error1: not_found
+            error: not_found
             error_description: An entity with that name could not be found
     method_not_allowed:
       description: Method not allowed
@@ -4643,7 +4643,7 @@ components:
           schema:
             $ref: '#/components/schemas/error_message'
           example: 
-            error1: method_not_allowed
+            error: method_not_allowed
             error_description: Request method 'DELETE' not supported
     internal_server_error:
       description: Internal error, not the fault of the client
@@ -4652,5 +4652,5 @@ components:
           schema:
             $ref: '#/components/schemas/error_message'
           example: 
-            error1: internal_error
+            error: internal_error
             error_description: Unknown error, try again later
