@@ -1,0 +1,164 @@
+openapi: 3.0.0
+info:
+  title: XBRL US API
+  description: |
+    This API defines the XBRL US API - V6
+  contact:
+    name: xbrl.us
+    email: support@xbrl.us
+  version: V1
+servers:
+- url: https://api.xbrl.us/
+  description: Running this application XBRL US server
+security:
+- oauth2:
+  - ROLE_CLIENT
+  - ROLE_USER
+tags:
+- name: oauth2
+  description: Operations to request authorization, receive tokens, and check tokens
+paths:
+  /oauth2/token:
+    summary: Aquire an access token by fulfilling a client_credentials grant, or a
+      password grant
+    post:
+      tags:
+      - oauth2
+      description: Assuming a valid login exists, this route allows a trusted client
+        to aquire an access token for itself, or to request an access token for a
+        specific user. You may send both client_credentials grants and password grants
+        via the following.
+      operationId: tokenUrl
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/authorization_grant'
+            example:
+              grant_type: password
+              client_id: 1223
+              client_secret: xhOEnAX2M...gaIYLXOvCe25Q
+              username: campbell.pryde@xbrl.us
+              password: someSecurePassword
+          application/x-www-form-urlencoded:
+            schema:
+              $ref: '#/components/schemas/authorization_grant'
+          multipart/form-data:
+            schema:
+              $ref: '#/components/schemas/authorization_grant'
+      responses:
+        200:
+          description: |
+            The authorization grant has been validated, and an access token is granted. [Read more](https://jwt.io/introduction/)
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/inline_response_200'
+        400:
+          description: Malformed request or missing fields. Check that Content-Type
+            matches the format/encoding, and that all required fields are spelled
+            correctly, have correct types, and valid values.
+          content:
+            applications/json:
+              schema:
+                $ref: '#/components/schemas/error_message'
+              example:
+                error: bad_request
+                error_description: Missing a field.
+      security: []
+components:
+  schemas:
+    authorization_grant:
+      required:
+      - client_id
+      - client_secret
+      - grant_type
+      type: object
+      properties:
+        grant_type:
+          type: string
+          description: Used to identify which credentials the authorization server
+            needs to check
+          example: password
+        client_id:
+          type: string
+          description: Unique identifier agreed upon by XBRL US and the 3rd party
+            client
+          example: XBRL US
+        client_secret:
+          type: string
+          description: Base64 key used to authenticate the 3rd party client
+          format: byte
+        username:
+          type: string
+          description: Unique identifier for a given user
+          example: campbell.pryde@xbrl.us
+        password:
+          type: string
+          description: Password used to authenticate the 3rd party user
+          example: someSecurePassword
+        platform:
+          type: string
+          description: just required
+          example: pc
+    error_message:
+      type: object
+      properties:
+        errors:
+          type: string
+          description: Identifier for the error
+        error_description:
+          type: string
+          description: Adds more details to the error
+    inline_response_200:
+      type: object
+      properties:
+        platform:
+          type: string
+          example: pc
+        access_token:
+          type: string
+          format: byte
+        refresh_token:
+          type: string
+          format: byte
+        expires_in:
+          type: integer
+          example: 3600
+        refresh_token_expires_in:
+          type: integer
+          example: 3600
+        token_type:
+          type: string
+          example: bearer
+  responses:
+    bad_request:
+      description: Malformed request or missing fields. Check that Content-Type matches
+        the format/encoding, and that all required fields are spelled correctly, have
+        correct types, and valid values.
+      content:
+        applications/json:
+          schema:
+            $ref: '#/components/schemas/error_message'
+          example:
+            error: bad_request
+            error_description: Missing a field.
+    bad_token:
+      description: The token is invalid, expired, or corrupted
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/error_message'
+          example:
+            error: unauthorized,
+            error_description: Cannot convert access token to JSON
+  securitySchemes:
+    OAuth2:
+      type: oauth2
+      flows:
+        password:
+          tokenUrl: /oauth2/token
+    bearerAuth:
+      type: http
+      scheme: bearer
+      bearerFormat: JWT
